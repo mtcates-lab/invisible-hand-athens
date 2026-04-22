@@ -570,11 +570,11 @@ canvas {
   </div>
   <div class="header-stats">
     <div class="stat">
-      <div class="stat-n" id="nodeCount">10</div>
+      <div class="stat-n" id="nodeCount">15</div>
       <div class="stat-l">nodes</div>
     </div>
     <div class="stat">
-      <div class="stat-n" id="edgeCount">11</div>
+      <div class="stat-n" id="edgeCount">17</div>
       <div class="stat-l">edges</div>
     </div>
     <div class="stat">
@@ -603,6 +603,9 @@ canvas {
         <button class="filter-btn" data-filter="Collective">
           <span class="type-dot" style="background:#5B9FE8"></span>Collective
         </button>
+        <button class="filter-btn" data-filter="Resource provider">
+          <span class="type-dot" style="background:#E8C84A"></span>Resource provider
+        </button>
       </div>
     </div>
 
@@ -613,6 +616,7 @@ canvas {
       <div class="legend-item"><div class="legend-edge" style="background:#E8834A"></div>Resource flow</div>
       <div class="legend-item"><div class="legend-edge" style="background:#9B82E8"></div>Shared population</div>
       <div class="legend-item"><div class="legend-edge" style="background:#A09C94"></div>Overlap</div>
+      <div class="legend-item"><div class="legend-edge" style="background:#E8C84A"></div>Donates to</div>
     </div>
 
     <div class="sidebar-section">
@@ -621,6 +625,7 @@ canvas {
       <div class="legend-item"><div class="legend-node" style="background:#E8834A"></div>Faith org</div>
       <div class="legend-item"><div class="legend-node" style="background:#9B82E8"></div>Mutual aid</div>
       <div class="legend-item"><div class="legend-node" style="background:#5B9FE8"></div>Collective</div>
+      <div class="legend-item"><div class="legend-node" style="background:#E8C84A"></div>Resource provider</div>
     </div>
 
     <div class="detail-panel" id="detailPanel">
@@ -721,6 +726,7 @@ canvas {
               <option value="Resource flow">Resource flow</option>
               <option value="Shared population">Shared population</option>
               <option value="Overlap">Overlap</option>
+              <option value="Donates to">Donates to</option>
             </select>
           </div>
           <div class="form-group">
@@ -751,11 +757,12 @@ canvas {
 <script>
 // ── DATA ──────────────────────────────────────────────────
 const TYPE_COLORS = {
-  "Nonprofit (501c3)": "#4ABA7A",
-  "Faith org":         "#E8834A",
-  "Mutual aid":        "#9B82E8",
-  "Collective":        "#5B9FE8",
+  "Nonprofit (501c3)":  "#4ABA7A",
+  "Faith org":          "#E8834A",
+  "Mutual aid":         "#9B82E8",
+  "Collective":         "#5B9FE8",
   "Grassroots / informal": "#E8C84A",
+  "Resource provider":  "#E8C84A",
 };
 
 const EDGE_COLORS = {
@@ -764,6 +771,7 @@ const EDGE_COLORS = {
   "Resource flow":     "#E8834A",
   "Shared population": "#9B82E8",
   "Overlap":           "#6A6760",
+  "Donates to":        "#E8C84A",
 };
 
 let nodes = [
@@ -777,6 +785,11 @@ let nodes = [
   { id:"ORG008", name:"Our Daily Bread", type:"Nonprofit (501c3)", formality:"Institutionally structured", services:"Meals 500+/week, hygiene kits, health screening, job training", area:"Downtown", contact:"downtownministries.org/our-daily-bread", notes:"Resource hub model — meal is entry point. Part of Downtown Ministries.", x:0, y:0 },
   { id:"ORG009", name:"The Side Hustle", type:"Collective", formality:"Organized informal", services:"Pop-up food events, fundraising for community orgs", area:"Citywide", contact:"Confirm social media", notes:"Donates pop-up profits to aligned Athens orgs. Has partnered with Mutual Aid Athens, Bigger Vision, and others.", x:0, y:0 },
   { id:"ORG010", name:"Athens Anti-Discrimination Movement", type:"Nonprofit (501c3)", formality:"Fully formal", services:"Housing advocacy, anti-discrimination organizing", area:"Citywide", contact:"Confirm website", notes:"Housing and rights focus. Receives donations via Side Hustle pop-ups.", x:0, y:0 },
+  { id:"ORG011", name:"Paris Baguette", type:"Resource provider", formality:"Private business", services:"Surplus baked goods, prepared food", area:"W Broad St", contact:"parisbaguette.com", notes:"Donates surplus food to Campus Kitchen.", x:0, y:0 },
+  { id:"ORG012", name:"Trader Joe's Athens", type:"Resource provider", formality:"Private business", services:"Surplus groceries, produce, packaged goods", area:"Athens", contact:"traderjoes.com", notes:"Donates surplus groceries to Campus Kitchen.", x:0, y:0 },
+  { id:"ORG013", name:"Food Bank of NE Georgia", type:"Nonprofit (501c3)", formality:"Fully formal", services:"Food distribution to 230+ partner nonprofits, mobile pantry", area:"Athens + Clayton", contact:"foodbanknega.org", notes:"Major regional hub. 15.5M lbs distributed in 2024. Receives from Publix, Fresh Market. Distributes to Covenant and 230+ nonprofits.", x:0, y:0 },
+  { id:"ORG014", name:"Publix", type:"Resource provider", formality:"Private business", services:"Surplus groceries, produce, deli, bakery", area:"Multiple Athens locations", contact:"publix.com", notes:"Donates to Food Bank of NE Georgia via Publix Partners program.", x:0, y:0 },
+  { id:"ORG015", name:"The Fresh Market", type:"Resource provider", formality:"Private business", services:"Surplus specialty groceries, produce", area:"Athens", contact:"thefreshmarket.com", notes:"Donates surplus food to Food Bank of NE Georgia.", x:0, y:0 },
 ];
 
 let edges = [
@@ -791,6 +804,12 @@ let edges = [
   { id:"EDG009", source:"ORG006", target:"ORG007", type:"Overlap", notes:"Both operate on non-hierarchical mutual aid principles" },
   { id:"EDG010", source:"ORG008", target:"ORG001", type:"Shared population", notes:"Both primary downtown services for unhoused" },
   { id:"EDG011", source:"ORG004", target:"ORG002", type:"Shared population", notes:"Both UGA-connected food orgs — potential partnership gap" },
+  { id:"EDG012", source:"ORG011", target:"ORG002", type:"Donates to", notes:"Paris Baguette donates surplus baked goods to Campus Kitchen" },
+  { id:"EDG013", source:"ORG012", target:"ORG002", type:"Donates to", notes:"Trader Joe's donates surplus groceries to Campus Kitchen" },
+  { id:"EDG014", source:"ORG014", target:"ORG013", type:"Donates to", notes:"Publix donates via Publix Partners program to Food Bank" },
+  { id:"EDG015", source:"ORG015", target:"ORG013", type:"Donates to", notes:"Fresh Market donates surplus food to Food Bank" },
+  { id:"EDG016", source:"ORG013", target:"ORG003", type:"Resource flow", notes:"Food Bank distributes to Covenant Church as member nonprofit" },
+  { id:"EDG017", source:"ORG013", target:"ORG002", type:"Partnership", notes:"Food Bank and Campus Kitchen both in Athens food recovery ecosystem" },
 ];
 
 // ── GRAPH ENGINE ───────────────────────────────────────────
