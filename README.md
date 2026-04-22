@@ -2,6 +2,9 @@
 
 A civic network graph mapping the organizations, mutual aid groups, collectives, and faith communities doing community care work in Athens, Georgia.
 
+You can access the the Network Websit [here](https://mtcates-lab.github.io/invisible-hand-athens).
+
+or https://mtcates-lab.github.io/invisible-hand-athens if the hyperlink does not work.
 ---
 
 ## What this is
