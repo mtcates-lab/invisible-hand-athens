@@ -110,6 +110,18 @@ header {
   flex-direction: column;
   background: var(--bg2);
   overflow: hidden;
+  transform: translateX(-100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 26;
+  transition: transform 0.25s ease;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+  position: relative;
 }
 
 .sidebar-section {
@@ -277,8 +289,12 @@ header {
   text-align: center;
   position: relative;
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.15s;
 }
 
+.stat:hover { background: var(--bg3); }
 .stat:hover .stat-n { color: var(--ink); }
 .stat:hover .stat-l { color: var(--ink2); }
 
@@ -597,7 +613,7 @@ header {
   .dp-grid { grid-template-columns: 1fr; }
 }
 .sidebar-toggle {
-  display: none;
+  display: flex;
   position: absolute;
   top: 10px;
   left: 10px;
@@ -640,17 +656,10 @@ header {
     bottom: 0;
     width: 280px;
     z-index: 26;
-    transform: translateX(-100%);
-    transition: transform 0.25s ease;
   }
-
-  .sidebar.open { transform: translateX(0); }
-
-  .sidebar-toggle { display: flex; }
 
   .admin-toggle { right: 10px; top: 10px; }
   .admin-btn { font-size: 10px; padding: 4px 8px; }
-
   .canvas-hint { display: none; }
 }
 
@@ -1101,9 +1110,9 @@ canvas {
   </div>
   <div class="detail-page-body">
     <div class="dp-definition">
-      <p>A <strong style="color:var(--green)">node</strong> is any organization, collective, mutual aid group, faith community, or resource provider doing consistent community work in Athens, GA.</p>
-      <p>No 501c3 required. Nodes range from registered nonprofits to informal groups with no legal status. What matters is that they show up consistently and are accountable in some form to the community they serve.</p>
-      <p>The size of each node on the map reflects how many connections it has — larger nodes are more connected to the rest of the network.</p>
+      <p>A <strong style="color:var(--green)">node</strong> is any organization, collective, mutual aid group, faith community, or resource provider doing some form of community work in Athens, GA.</p>
+      <p>No 501c3 required. Registered nonprofits and informal groups with no legal status are considered here. What matters is showing up consistently and being accountable in some form to the community they serve.</p>
+      <p>Node size reflects connection count. More edges means a bigger node.</p>
     </div>
     <div class="dp-section-label">All nodes in the graph</div>
     <div class="dp-grid" id="nodes-list"></div>
@@ -1119,15 +1128,15 @@ canvas {
   </div>
   <div class="detail-page-body">
     <div class="dp-definition">
-      <p>An <strong style="color:var(--green)">edge</strong> is a documented relationship between two organizations. Edges are what make this a network rather than just a list — they show how the community ecosystem actually functions.</p>
-      <p>Edge types: <strong style="color:#5B9FE8">Referral</strong> (one org sends people to another), <strong style="color:#4ABA7A">Partnership</strong> (active collaboration), <strong style="color:#E8834A">Resource flow</strong> (material resources move between orgs), <strong style="color:#9B82E8">Shared population</strong> (both serve the same people), <strong style="color:#A09C94">Overlap</strong> (similar work in same area), <strong style="color:#E8C84A">Donates to</strong> (a business or provider donates food or resources).</p>
-      <p>Missing edges are just as important as existing ones — they reveal connections that should exist but don't yet.</p>
+      <p>An <strong style="color:var(--green)">edge</strong> is a documented relationship between two organizations. Without edges this project would just be a list. Edges are what make it a network.</p>
+      <p>Six types: <strong style="color:#5B9FE8">Referral</strong> — one org sends people to another. <strong style="color:#4ABA7A">Partnership</strong> — active collaboration on something. <strong style="color:#E8834A">Resource flow</strong> — material resources move between orgs. <strong style="color:#9B82E8">Shared population</strong> — both serve the same people. <strong style="color:#A09C94">Overlap</strong> — similar work in the same area. <strong style="color:#E8C84A">Donates to</strong> — a business or provider donates food or resources.</p>
+      <p>Missing edges matter as much as existing ones. A gap between two nodes that should be connected is useful information.</p>
     </div>
     <div class="dp-section-label">All edges in the graph</div>
     <div id="edges-list"></div>
   </div>
 </div>
-
+  
 <!-- GAPS PAGE -->
 <div class="detail-page" id="page-gaps">
   <div class="detail-page-header">
@@ -1135,11 +1144,11 @@ canvas {
     <span class="detail-page-title">Gaps</span>
     <span class="detail-page-count">5 identified</span>
   </div>
-  <div class="detail-page-body">
-    <div class="dp-definition">
-      <p>A <strong style="color:var(--green)">gap</strong> is a known hole in the Athens community network — a service that doesn't exist, a geographic area with no coverage, an org doing important work that nobody knows about, or a connection between orgs that should exist but doesn't.</p>
-      <p>Gaps are not failures. They're information. Mapping them is the first step toward filling them — either by finding existing orgs that address the gap, facilitating new connections, or surfacing the need to the community.</p>
-    </div>
+<div class="dp-definition">
+  <p>A <strong style="color:var(--green)">gaps</strong> are things that are missing. Such as a service nobody offers, a neighborhood nobody reaches, an org doing real work that the rest of the network has never heard of, a referral path that should exist but doesn't.</p>
+  <p>Network analysis finds gaps three ways. First, nodes with very few edges signal isolation. Second, geographic clustering reveals areas with no coverage. Third, comparing what people need against what orgs offer shows service gaps. The gaps listed here came from all three.</p>
+  <p>Mapping a gap is step one. The next step is in the "ways to address" section of each one below.</p>
+</div>
     <div class="dp-section-label">Known gaps</div>
     <div id="gaps-list"></div>
   </div>
@@ -1151,11 +1160,11 @@ const GAPS = [
     title: "East side food access",
     category: "Food · Geographic gap",
     priority: "High",
-    desc: "No known food distribution org serving east of downtown Athens has been mapped yet. The network currently clusters around downtown and UGA — leaving a potential geographic hole for east side residents.",
+    desc: "Food distribution in Athens clusters around downtown and UGA. Nothing east of downtown has been mapped yet. That is a geographic hole.",
     fixes: [
-      "Ask Bigger Vision and Campus Kitchen directly: who serves the east side?",
+      "Ask Bigger Vision and Campus Kitchen: who serves the east side?",
       "Search Facebook community groups for east Athens mutual aid activity",
-      "Check if Food Bank of NE Georgia mobile pantry routes cover east side",
+      "Check Food Bank of NE Georgia mobile pantry routes for east side coverage",
       "Ask Lemonaid Athens if their Sunday routes reach east side neighborhoods",
     ]
   },
@@ -1163,46 +1172,46 @@ const GAPS = [
     title: "Clothing access",
     category: "Clothing · Service gap",
     priority: "Medium",
-    desc: "No informal clothing collective or free clothing exchange is currently mapped for Athens. Larger orgs like Bigger Vision may have clothing resources but peer-to-peer or collective clothing access isn't visible in the network.",
+    desc: "No free clothing exchange or clothing collective is mapped for Athens. Bigger Vision may have clothing resources but that has not been confirmed. Peer to peer clothing access is not visible anywhere in the network.",
     fixes: [
       "Search Facebook Buy Nothing groups and community swap groups in Athens",
-      "Ask orgs in conversations: where do people go for clothing?",
-      "Check if any faith communities run clothing closets not yet mapped",
-      "Athens Area Homeless Shelter may have clothing resources — confirm",
+      "Ask orgs: where do people go for clothing?",
+      "Check if any faith communities run clothing closets",
+      "Confirm whether Athens Area Homeless Shelter has clothing resources",
     ]
   },
   {
     title: "Unmapped informal mutual aid",
     category: "Mutual aid · Invisible network",
     priority: "High",
-    desc: "There are almost certainly mutual aid networks operating in Athens that aren't in any directory, don't have websites, and operate entirely through word of mouth and group chats. These are the hardest to map and the most important to include.",
+    desc: "Mutual aid networks operating through word of mouth and group chats almost certainly exist in Athens. They have no websites, no directory listings, and no edges in this graph. They are also the most important to find.",
     fixes: [
-      "Ask every org: 'Who's doing important work nobody knows about?'",
+      "Ask every org: who is doing important work nobody knows about?",
       "Search Instagram and Facebook for Athens mutual aid hashtags",
-      "Talk to people who use services — they often know informal networks orgs don't",
-      "Attend community events and ask around — these networks travel by word of mouth",
+      "Talk to people who use services, they often know informal networks that orgs do not",
+      "Show up to community events and ask around",
     ]
   },
   {
     title: "Grocery store donation gaps",
     category: "Food · Resource flow gap",
     priority: "High",
-    desc: "Multiple grocery stores in Athens are likely throwing away edible surplus food that could be donated. Paris Baguette and Trader Joe's already donate to Campus Kitchen — but other stores like Kroger, Whole Foods, and local grocers have no documented donation relationships in the graph.",
+    desc: "Paris Baguette and Trader Joe's donate to Campus Kitchen. Kroger, Whole Foods, and most local grocers have no documented donation relationship in the graph. That food is likely going in the trash.",
     fixes: [
-      "Ask Campus Kitchen for a complete list of current donors and stores they've approached",
-      "Identify stores with no donation relationship and flag them as outreach targets",
-      "Share Bill Emerson Good Samaritan Act info with stores — federal law protects food donors from liability",
-      "Connect willing stores directly to Campus Kitchen or Food Bank as pickup partners",
+      "Ask Campus Kitchen for a full list of current donors and stores they have approached",
+      "Flag stores with no donation relationship as outreach targets",
+      "Share the Bill Emerson Good Samaritan Act with store managers, federal law protects food donors from liability",
+      "Connect willing stores directly to Campus Kitchen or Food Bank for pickup",
     ]
   },
   {
     title: "Medical and legal aid visibility",
     category: "Medical / Legal · Service gap",
     priority: "Medium",
-    desc: "Low-cost or free medical care and legal aid for Athens residents — especially undocumented residents — is unclear in the current network. UGA Legal Aid Clinic exists but eligibility constraints and capacity are unknown. Free medical options are not yet mapped.",
+    desc: "Free or low cost medical care and legal aid for Athens residents is not mapped. UGA Legal Aid Clinic exists but eligibility and capacity are unconfirmed. Free medical options are unknown.",
     fixes: [
       "Research Athens community health clinics and free clinics",
-      "Confirm UGA Legal Aid eligibility — do they serve undocumented residents?",
+      "Confirm UGA Legal Aid eligibility, specifically whether they serve undocumented residents",
       "Ask Bigger Vision and Mutual Aid Athens where they refer people for medical and legal needs",
       "Check if any faith communities operate health or legal clinics",
     ]
@@ -1274,6 +1283,7 @@ let W, H, dpr;
 let transform = { x: 0, y: 0, scale: 1 };
 let dragging = false, dragNode = null;
 let panStart = null;
+let wasDragging = false;
 let selectedNode = null;
 let activeFilter = 'all';
 let animFrame = null;
@@ -1529,6 +1539,7 @@ function getNodeAt(sx, sy) {
 }
 
 canvas.addEventListener('mousedown', e => {
+  wasDragging = false;
   const rect = canvas.getBoundingClientRect();
   const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
   const hit = getNodeAt(sx, sy);
@@ -1545,11 +1556,13 @@ canvas.addEventListener('mousemove', e => {
   const rect = canvas.getBoundingClientRect();
   const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
   if (dragNode && dragging) {
+    wasDragging = true;
     const w = screenToWorld(sx, sy);
     dragNode.x = w.x; dragNode.y = w.y;
     simRunning = false;
     draw();
   } else if (panStart) {
+    wasDragging = true;
     transform.x = e.clientX - panStart.x;
     transform.y = e.clientY - panStart.y;
     draw();
@@ -1559,12 +1572,20 @@ canvas.addEventListener('mousemove', e => {
 });
 
 canvas.addEventListener('mouseup', e => {
-  if (!dragNode && !panStart) {
-    const rect = canvas.getBoundingClientRect();
-    const hit = getNodeAt(e.clientX - rect.left, e.clientY - rect.top);
-    if (!hit) { selectedNode = null; renderDetail(null); draw(); }
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
+  if (!wasDragging) {
+    const hit = getNodeAt(sx, sy);
+    if (!hit) {
+      selectedNode = null;
+      renderDetail(null);
+      draw();
+    }
   }
-  dragNode = null; dragging = false; panStart = null;
+  dragNode = null;
+  dragging = false;
+  panStart = null;
+  wasDragging = false;
 });
 
 canvas.addEventListener('wheel', e => {
@@ -1647,7 +1668,6 @@ function selectNode(n) {
   draw();
   if (n && window.innerWidth <= 640) openSidebar();
 }
-
 function renderDetail(n) {
   const panel = document.getElementById('detailPanel');
   if (!n) {
@@ -1887,7 +1907,7 @@ function renderGapsPage() {
   }).join('');
 }
 
-// ── MOBILE SIDEBAR ────────────────────────────────────────
+// ── SIDEBAR ───────────────────────────────────────────────
 const sidebarToggle = document.getElementById('sidebarToggle');
 const sidebarEl = document.querySelector('.sidebar');
 const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -1911,6 +1931,9 @@ sidebarToggle.onclick = () => {
 };
 
 sidebarOverlay.onclick = closeSidebar;
+
+// Open sidebar by default on desktop
+if (window.innerWidth > 640) openSidebar();
 
 // ── INIT ──────────────────────────────────────────────────
 window.addEventListener('resize', () => { resize(); initPositions(); simulate(); });
