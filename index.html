@@ -272,7 +272,330 @@ header {
   line-height: 1.4;
 }
 
-/* ── MOBILE SIDEBAR TOGGLE ── */
+/* ── STAT TOOLTIPS ── */
+.stat {
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.stat:hover .stat-n { color: var(--ink); }
+.stat:hover .stat-l { color: var(--ink2); }
+
+.stat-tooltip {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--ink2);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 100;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+  min-width: 180px;
+  white-space: normal;
+  max-width: 220px;
+}
+
+.stat-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px; height: 8px;
+  background: var(--bg3);
+  border-left: 1px solid var(--border2);
+  border-top: 1px solid var(--border2);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.stat:hover .stat-tooltip { opacity: 1; }
+
+.stat-tooltip-title {
+  font-weight: 500;
+  color: var(--green);
+  font-size: 11px;
+  margin-bottom: 4px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.04em;
+}
+
+.stat-click-hint {
+  font-size: 10px;
+  color: var(--ink3);
+  margin-top: 5px;
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── DETAIL PAGES ── */
+.detail-page {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 200;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.detail-page.open { display: flex; }
+
+.detail-page-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 28px;
+  height: 56px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--bg2);
+}
+
+.detail-page-back {
+  background: none;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  color: var(--ink2);
+  font-size: 13px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detail-page-back:hover { color: var(--ink); border-color: var(--green); }
+
+.detail-page-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  color: var(--ink);
+}
+
+.detail-page-count {
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  color: var(--ink3);
+  margin-left: auto;
+}
+
+.detail-page-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 28px;
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.detail-page-body::-webkit-scrollbar { width: 3px; }
+.detail-page-body::-webkit-scrollbar-thumb { background: var(--border2); }
+
+.dp-definition {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--green);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin-bottom: 32px;
+}
+
+.dp-definition p {
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.dp-definition p + p { margin-top: 8px; }
+
+.dp-section-label {
+  font-size: 9px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.12em;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.dp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.dp-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  transition: border-color 0.15s;
+}
+
+.dp-card:hover { border-color: var(--border2); }
+
+.dp-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.dp-card-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dp-card-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.dp-card-meta {
+  font-size: 11px;
+  color: var(--ink3);
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 6px;
+}
+
+.dp-card-desc {
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+.dp-edge-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.dp-edge-item:last-child { border-bottom: none; }
+
+.dp-edge-type {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.dp-edge-orgs {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.dp-edge-note {
+  font-size: 11px;
+  color: var(--ink3);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+.dp-gap-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 12px;
+}
+
+.dp-gap-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.dp-gap-priority {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.priority-high { background: rgba(226,75,74,0.15); color: #E24B4A; }
+.priority-medium { background: rgba(232,200,74,0.15); color: #E8C84A; }
+
+.dp-gap-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.dp-gap-category {
+  font-size: 11px;
+  color: var(--ink3);
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 10px;
+}
+
+.dp-gap-desc {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.6;
+  margin-bottom: 12px;
+  font-weight: 300;
+}
+
+.dp-gap-fixes {
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+.dp-gap-fixes-label {
+  font-size: 9px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.1em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.dp-fix-item {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.5;
+}
+
+.dp-fix-bullet {
+  color: var(--green);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+@media (max-width: 640px) {
+  .detail-page-body { padding: 20px 16px; }
+  .detail-page-header { padding: 0 16px; }
+  .dp-grid { grid-template-columns: 1fr; }
+}
 .sidebar-toggle {
   display: none;
   position: absolute;
@@ -569,17 +892,32 @@ canvas {
     The Invisible Hand
   </div>
   <div class="header-stats">
-    <div class="stat">
+    <div class="stat" onclick="openDetailPage('nodes')" title="">
       <div class="stat-n" id="nodeCount">15</div>
       <div class="stat-l">nodes</div>
+      <div class="stat-tooltip">
+        <div class="stat-tooltip-title">Nodes</div>
+        Each dot on the graph is a node — one organization, collective, or resource provider in the Athens community ecosystem.
+        <div class="stat-click-hint">click to see all →</div>
+      </div>
     </div>
-    <div class="stat">
+    <div class="stat" onclick="openDetailPage('edges')" title="">
       <div class="stat-n" id="edgeCount">17</div>
       <div class="stat-l">edges</div>
+      <div class="stat-tooltip">
+        <div class="stat-tooltip-title">Edges</div>
+        Each line between nodes is an edge — a documented relationship between two organizations. Referrals, partnerships, resource flows, and more.
+        <div class="stat-click-hint">click to see all →</div>
+      </div>
     </div>
-    <div class="stat">
+    <div class="stat" onclick="openDetailPage('gaps')" title="">
       <div class="stat-n">5</div>
       <div class="stat-l">gaps</div>
+      <div class="stat-tooltip">
+        <div class="stat-tooltip-title">Gaps</div>
+        Known holes in the network — services that don't exist, areas with no coverage, or connections that should exist but don't yet.
+        <div class="stat-click-hint">click to see all →</div>
+      </div>
     </div>
   </div>
   <div class="header-meta">Athens, GA · v0.1</div>
@@ -754,8 +1092,124 @@ canvas {
   </div>
 </div>
 
+<!-- NODES PAGE -->
+<div class="detail-page" id="page-nodes">
+  <div class="detail-page-header">
+    <button class="detail-page-back" onclick="closeDetailPage()">← Back to map</button>
+    <span class="detail-page-title">Nodes</span>
+    <span class="detail-page-count" id="nodes-page-count"></span>
+  </div>
+  <div class="detail-page-body">
+    <div class="dp-definition">
+      <p>A <strong style="color:var(--green)">node</strong> is any organization, collective, mutual aid group, faith community, or resource provider doing consistent community work in Athens, GA.</p>
+      <p>No 501c3 required. Nodes range from registered nonprofits to informal groups with no legal status. What matters is that they show up consistently and are accountable in some form to the community they serve.</p>
+      <p>The size of each node on the map reflects how many connections it has — larger nodes are more connected to the rest of the network.</p>
+    </div>
+    <div class="dp-section-label">All nodes in the graph</div>
+    <div class="dp-grid" id="nodes-list"></div>
+  </div>
+</div>
+
+<!-- EDGES PAGE -->
+<div class="detail-page" id="page-edges">
+  <div class="detail-page-header">
+    <button class="detail-page-back" onclick="closeDetailPage()">← Back to map</button>
+    <span class="detail-page-title">Edges</span>
+    <span class="detail-page-count" id="edges-page-count"></span>
+  </div>
+  <div class="detail-page-body">
+    <div class="dp-definition">
+      <p>An <strong style="color:var(--green)">edge</strong> is a documented relationship between two organizations. Edges are what make this a network rather than just a list — they show how the community ecosystem actually functions.</p>
+      <p>Edge types: <strong style="color:#5B9FE8">Referral</strong> (one org sends people to another), <strong style="color:#4ABA7A">Partnership</strong> (active collaboration), <strong style="color:#E8834A">Resource flow</strong> (material resources move between orgs), <strong style="color:#9B82E8">Shared population</strong> (both serve the same people), <strong style="color:#A09C94">Overlap</strong> (similar work in same area), <strong style="color:#E8C84A">Donates to</strong> (a business or provider donates food or resources).</p>
+      <p>Missing edges are just as important as existing ones — they reveal connections that should exist but don't yet.</p>
+    </div>
+    <div class="dp-section-label">All edges in the graph</div>
+    <div id="edges-list"></div>
+  </div>
+</div>
+
+<!-- GAPS PAGE -->
+<div class="detail-page" id="page-gaps">
+  <div class="detail-page-header">
+    <button class="detail-page-back" onclick="closeDetailPage()">← Back to map</button>
+    <span class="detail-page-title">Gaps</span>
+    <span class="detail-page-count">5 identified</span>
+  </div>
+  <div class="detail-page-body">
+    <div class="dp-definition">
+      <p>A <strong style="color:var(--green)">gap</strong> is a known hole in the Athens community network — a service that doesn't exist, a geographic area with no coverage, an org doing important work that nobody knows about, or a connection between orgs that should exist but doesn't.</p>
+      <p>Gaps are not failures. They're information. Mapping them is the first step toward filling them — either by finding existing orgs that address the gap, facilitating new connections, or surfacing the need to the community.</p>
+    </div>
+    <div class="dp-section-label">Known gaps</div>
+    <div id="gaps-list"></div>
+  </div>
+</div>
+
 <script>
-// ── DATA ──────────────────────────────────────────────────
+const GAPS = [
+  {
+    title: "East side food access",
+    category: "Food · Geographic gap",
+    priority: "High",
+    desc: "No known food distribution org serving east of downtown Athens has been mapped yet. The network currently clusters around downtown and UGA — leaving a potential geographic hole for east side residents.",
+    fixes: [
+      "Ask Bigger Vision and Campus Kitchen directly: who serves the east side?",
+      "Search Facebook community groups for east Athens mutual aid activity",
+      "Check if Food Bank of NE Georgia mobile pantry routes cover east side",
+      "Ask Lemonaid Athens if their Sunday routes reach east side neighborhoods",
+    ]
+  },
+  {
+    title: "Clothing access",
+    category: "Clothing · Service gap",
+    priority: "Medium",
+    desc: "No informal clothing collective or free clothing exchange is currently mapped for Athens. Larger orgs like Bigger Vision may have clothing resources but peer-to-peer or collective clothing access isn't visible in the network.",
+    fixes: [
+      "Search Facebook Buy Nothing groups and community swap groups in Athens",
+      "Ask orgs in conversations: where do people go for clothing?",
+      "Check if any faith communities run clothing closets not yet mapped",
+      "Athens Area Homeless Shelter may have clothing resources — confirm",
+    ]
+  },
+  {
+    title: "Unmapped informal mutual aid",
+    category: "Mutual aid · Invisible network",
+    priority: "High",
+    desc: "There are almost certainly mutual aid networks operating in Athens that aren't in any directory, don't have websites, and operate entirely through word of mouth and group chats. These are the hardest to map and the most important to include.",
+    fixes: [
+      "Ask every org: 'Who's doing important work nobody knows about?'",
+      "Search Instagram and Facebook for Athens mutual aid hashtags",
+      "Talk to people who use services — they often know informal networks orgs don't",
+      "Attend community events and ask around — these networks travel by word of mouth",
+    ]
+  },
+  {
+    title: "Grocery store donation gaps",
+    category: "Food · Resource flow gap",
+    priority: "High",
+    desc: "Multiple grocery stores in Athens are likely throwing away edible surplus food that could be donated. Paris Baguette and Trader Joe's already donate to Campus Kitchen — but other stores like Kroger, Whole Foods, and local grocers have no documented donation relationships in the graph.",
+    fixes: [
+      "Ask Campus Kitchen for a complete list of current donors and stores they've approached",
+      "Identify stores with no donation relationship and flag them as outreach targets",
+      "Share Bill Emerson Good Samaritan Act info with stores — federal law protects food donors from liability",
+      "Connect willing stores directly to Campus Kitchen or Food Bank as pickup partners",
+    ]
+  },
+  {
+    title: "Medical and legal aid visibility",
+    category: "Medical / Legal · Service gap",
+    priority: "Medium",
+    desc: "Low-cost or free medical care and legal aid for Athens residents — especially undocumented residents — is unclear in the current network. UGA Legal Aid Clinic exists but eligibility constraints and capacity are unknown. Free medical options are not yet mapped.",
+    fixes: [
+      "Research Athens community health clinics and free clinics",
+      "Confirm UGA Legal Aid eligibility — do they serve undocumented residents?",
+      "Ask Bigger Vision and Mutual Aid Athens where they refer people for medical and legal needs",
+      "Check if any faith communities operate health or legal clinics",
+    ]
+  },
+];
+</script>
+<script>
 const TYPE_COLORS = {
   "Nonprofit (501c3)":  "#4ABA7A",
   "Faith org":          "#E8834A",
@@ -1349,6 +1803,85 @@ function renderOrgList() {
             ${n.name}
           </div>
           <div class="org-list-type">${n.type} · ${degree} connections</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── DETAIL PAGES ──────────────────────────────────────────
+function openDetailPage(type) {
+  const page = document.getElementById('page-' + type);
+  if (!page) return;
+  if (type === 'nodes') renderNodesPage();
+  if (type === 'edges') renderEdgesPage();
+  if (type === 'gaps') renderGapsPage();
+  page.classList.add('open');
+}
+
+function closeDetailPage() {
+  document.querySelectorAll('.detail-page').forEach(p => p.classList.remove('open'));
+}
+
+function renderNodesPage() {
+  const list = document.getElementById('nodes-list');
+  const count = document.getElementById('nodes-page-count');
+  count.textContent = nodes.length + ' organizations';
+  list.innerHTML = nodes.map(n => {
+    const color = TYPE_COLORS[n.type] || '#A09C94';
+    const degree = edges.filter(e => e.source === n.id || e.target === n.id).length;
+    return `
+      <div class="dp-card">
+        <div class="dp-card-header">
+          <div class="dp-card-dot" style="background:${color}"></div>
+          <div class="dp-card-name">${n.name}</div>
+        </div>
+        <div class="dp-card-meta">${n.type} · ${n.formality} · ${degree} connection${degree !== 1 ? 's' : ''}</div>
+        <div class="dp-card-desc">${n.services}</div>
+        ${n.area !== '—' ? `<div class="dp-card-meta" style="margin-top:6px">📍 ${n.area}</div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function renderEdgesPage() {
+  const list = document.getElementById('edges-list');
+  const count = document.getElementById('edges-page-count');
+  count.textContent = edges.length + ' connections';
+  list.innerHTML = edges.map(e => {
+    const a = nodes.find(n => n.id === e.source);
+    const b = nodes.find(n => n.id === e.target);
+    if (!a || !b) return '';
+    const color = EDGE_COLORS[e.type] || '#6A6760';
+    return `
+      <div class="dp-edge-item">
+        <span class="dp-edge-type" style="background:${color}22;color:${color}">${e.type}</span>
+        <div>
+          <div class="dp-edge-orgs">${a.name} ↔ ${b.name}</div>
+          ${e.notes ? `<div class="dp-edge-note">${e.notes}</div>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderGapsPage() {
+  const list = document.getElementById('gaps-list');
+  list.innerHTML = GAPS.map(g => {
+    const priorityClass = g.priority === 'High' ? 'priority-high' : 'priority-medium';
+    const fixes = g.fixes.map(f => `
+      <div class="dp-fix-item">
+        <span class="dp-fix-bullet">→</span>
+        <span>${f}</span>
+      </div>`).join('');
+    return `
+      <div class="dp-gap-item">
+        <div class="dp-gap-header">
+          <span class="dp-gap-priority ${priorityClass}">${g.priority}</span>
+          <span class="dp-gap-title">${g.title}</span>
+        </div>
+        <div class="dp-gap-category">${g.category}</div>
+        <div class="dp-gap-desc">${g.desc}</div>
+        <div class="dp-gap-fixes">
+          <div class="dp-gap-fixes-label">Ways to address this gap</div>
+          ${fixes}
         </div>
       </div>`;
   }).join('');
