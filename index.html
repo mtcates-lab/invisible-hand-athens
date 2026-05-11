@@ -4,242 +4,337 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Invisible Hand — Athens Civic Network</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #0F0F0D;
-  --bg2: #161614;
-  --bg3: #1E1E1B;
-  --ink: #F0EDE6;
-  --ink2: #A09C94;
-  --ink3: #5A5750;
-  --green: #4ABA7A;
-  --green-dim: #2D5F3F;
-  --orange: #E8834A;
-  --purple: #9B82E8;
-  --blue: #5B9FE8;
-  --yellow: #E8C84A;
-  --border: rgba(240,237,230,0.08);
-  --border2: rgba(240,237,230,0.15);
+  --paper: #F5F0E8;
+  --paper2: #EDE8DC;
+  --paper3: #E4DDD0;
+  --ink: #1A1814;
+  --ink2: #3D3A33;
+  --ink3: #7A7568;
+  --ink4: #B0A898;
+  --red: #C0392B;
+  --green: #2D6A4F;
+  --border: rgba(26,24,20,0.12);
+  --border2: rgba(26,24,20,0.20);
+
+  /* node/edge colors — kept from original */
+  --c-nonprofit: #2D6A4F;
+  --c-faith: #8B4513;
+  --c-mutual: #5B4A8A;
+  --c-collective: #1A5C8A;
+  --c-resource: #8A6A1A;
+
+  --e-referral: #1A5C8A;
+  --e-partnership: #2D6A4F;
+  --e-resource: #8B4513;
+  --e-shared: #5B4A8A;
+  --e-overlap: #7A7568;
+  --e-donates: #8A6A1A;
 }
+
+html, body { height: 100%; overflow: hidden; }
 
 body {
   font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
+  background: var(--paper);
   color: var(--ink);
-  height: 100vh;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  font-weight: 300;
 }
 
-/* ── HEADER ── */
-header {
+/* ── MASTHEAD ── */
+.masthead {
+  border-bottom: 3px solid var(--ink);
+  flex-shrink: 0;
+  background: var(--paper);
+  z-index: 50;
+}
+
+.masthead-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  height: 52px;
+  padding: 10px 24px 0;
   border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-  background: var(--bg);
-  z-index: 10;
 }
 
-.logo {
-  font-family: 'Instrument Serif', serif;
-  font-size: 18px;
+.masthead-dateline {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--ink3);
+  text-transform: uppercase;
+}
+
+.masthead-stats {
+  display: flex;
+  gap: 0;
+}
+
+.mstat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 16px;
+  border-left: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+}
+
+.mstat:hover { background: var(--paper2); }
+
+.mstat-n {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--red);
+  line-height: 1;
+}
+
+.mstat-l {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.mstat-tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  line-height: 1.6;
+  padding: 10px 14px;
+  width: 220px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 200;
+  font-weight: 300;
+}
+
+.mstat:hover .mstat-tooltip { opacity: 1; }
+
+.mstat-tooltip-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 5px;
+}
+
+.mstat-hint {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--ink3);
+  margin-top: 6px;
+  letter-spacing: 0.06em;
+}
+
+.masthead-title-row {
+  padding: 8px 24px 6px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.masthead-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
   color: var(--ink);
+}
+
+.masthead-title em {
+  font-style: italic;
+  color: var(--red);
+}
+
+.masthead-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  letter-spacing: 0.06em;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* MARQUEE */
+.marquee-bar {
+  background: var(--ink);
+  padding: 7px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.marquee-track {
+  display: inline-flex;
+  animation: marquee 35s linear infinite;
+}
+
+.marquee-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--paper2);
+  text-transform: uppercase;
+  padding: 0 32px;
+}
+
+.marquee-sep { color: var(--red); margin-left: 32px; }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ── MAIN LAYOUT ── */
+.app-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  border-right: 3px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  overflow: hidden;
+  transition: transform 0.25s ease;
+  z-index: 26;
+}
+
+.sidebar-section {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  color: var(--ink4);
+  text-transform: uppercase;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.logo-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 8px var(--green);
-}
-
-.header-meta {
-  font-size: 11px;
-  color: var(--ink3);
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 0.05em;
-}
-
-.header-stats {
-  display: flex;
-  gap: 20px;
-}
-
-.stat {
-  text-align: center;
-}
-
-.stat-n {
-  font-family: 'Instrument Serif', serif;
-  font-size: 18px;
-  color: var(--green);
-  line-height: 1;
-}
-
-.stat-l {
-  font-size: 10px;
-  color: var(--ink3);
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 0.04em;
-}
-
-/* ── LAYOUT ── */
-.main {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
-
-/* ── SIDEBAR ── */
-.sidebar {
-  width: 260px;
-  flex-shrink: 0;
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  background: var(--bg2);
-  overflow: hidden;
-  transform: translateX(-100%);
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 26;
-  transition: transform 0.25s ease;
-}
-
-.sidebar.open {
-  transform: translateX(0);
-  position: relative;
-}
-
-.sidebar-section {
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--border);
-}
-
-.sidebar-label {
-  font-size: 9px;
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 0.1em;
-  color: var(--ink3);
-  text-transform: uppercase;
-  margin-bottom: 10px;
+.sidebar-label::before {
+  content: '';
+  display: block;
+  width: 16px;
+  height: 1px;
+  background: var(--red);
 }
 
 /* FILTER PILLS */
-.filter-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
+.filter-group { display: flex; flex-wrap: wrap; gap: 4px; }
 
 .filter-btn {
-  font-size: 11px;
-  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
   padding: 4px 10px;
-  border-radius: 20px;
   border: 1px solid var(--border2);
   background: transparent;
-  color: var(--ink2);
+  color: var(--ink3);
   cursor: pointer;
   transition: all 0.15s;
   display: flex;
   align-items: center;
   gap: 5px;
+  letter-spacing: 0.04em;
+  border-radius: 0;
 }
 
-.filter-btn:hover { border-color: var(--green); color: var(--green); }
-.filter-btn.active { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+.filter-btn:hover { border-color: var(--ink); color: var(--ink); background: var(--paper2); }
+.filter-btn.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 
-.type-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+.type-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
 /* LEGEND */
 .legend-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 7px;
-  font-size: 11px;
+  margin-bottom: 6px;
+  font-size: 10px;
   color: var(--ink2);
+  font-family: 'DM Sans', sans-serif;
 }
 
-.legend-node {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+.legend-node { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.legend-edge { width: 20px; height: 2px; flex-shrink: 0; }
 
-.legend-edge {
-  width: 20px;
-  height: 2px;
-  flex-shrink: 0;
-  border-radius: 1px;
-}
-
-/* ORG DETAIL PANEL */
+/* DETAIL PANEL */
 .detail-panel {
   flex: 1;
   overflow-y: auto;
-  padding: 14px 16px;
+  padding: 14px 18px;
 }
 
 .detail-panel::-webkit-scrollbar { width: 3px; }
-.detail-panel::-webkit-scrollbar-track { background: transparent; }
-.detail-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.detail-panel::-webkit-scrollbar-thumb { background: var(--border2); }
 
 .detail-empty {
-  color: var(--ink3);
-  font-size: 12px;
+  font-family: 'Playfair Display', serif;
   font-style: italic;
+  font-size: 13px;
+  color: var(--ink3);
   line-height: 1.6;
   margin-top: 4px;
 }
 
 .detail-name {
-  font-family: 'Instrument Serif', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 20px;
+  font-weight: 700;
   color: var(--ink);
   line-height: 1.2;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .detail-type-badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 10px;
-  font-family: 'DM Mono', monospace;
-  padding: 3px 8px;
-  border-radius: 4px;
-  margin-bottom: 12px;
-  letter-spacing: 0.04em;
-}
-
-.detail-field {
-  margin-bottom: 10px;
-}
-
-.detail-field-label {
   font-size: 9px;
   font-family: 'DM Mono', monospace;
-  letter-spacing: 0.1em;
-  color: var(--ink3);
+  padding: 3px 8px;
+  margin-bottom: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+}
+
+.detail-field { margin-bottom: 10px; }
+
+.detail-field-label {
+  font-size: 8px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.12em;
+  color: var(--ink4);
   text-transform: uppercase;
   margin-bottom: 3px;
 }
@@ -250,499 +345,159 @@ header {
   line-height: 1.5;
 }
 
-.connections-list {
-  margin-top: 4px;
-}
-
 .conn-item {
   display: flex;
   align-items: flex-start;
-  gap: 6px;
-  padding: 6px 0;
+  gap: 8px;
+  padding: 7px 0;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
-  transition: opacity 0.15s;
+  transition: background 0.1s;
 }
 
-.conn-item:hover { opacity: 0.7; }
+.conn-item:hover { background: var(--paper2); margin: 0 -18px; padding: 7px 18px; }
 .conn-item:last-child { border-bottom: none; }
 
 .conn-rel {
-  font-size: 9px;
+  font-size: 8px;
   font-family: 'DM Mono', monospace;
   padding: 2px 6px;
-  border-radius: 3px;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-.conn-name {
-  font-size: 12px;
-  color: var(--ink);
-  line-height: 1.4;
-}
-
-/* ── STAT TOOLTIPS ── */
-.stat {
-  text-align: center;
-  position: relative;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-  transition: background 0.15s;
-}
-
-.stat:hover { background: var(--bg3); }
-.stat:hover .stat-n { color: var(--ink); }
-.stat:hover .stat-l { color: var(--ink2); }
-
-.stat-tooltip {
-  position: absolute;
-  top: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 11px;
-  color: var(--ink2);
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.15s;
-  z-index: 100;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 400;
-  line-height: 1.5;
-  text-align: left;
-  min-width: 180px;
-  white-space: normal;
-  max-width: 220px;
-}
-
-.stat-tooltip::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px; height: 8px;
-  background: var(--bg3);
-  border-left: 1px solid var(--border2);
-  border-top: 1px solid var(--border2);
-  transform: translateX(-50%) rotate(45deg);
-}
-
-.stat:hover .stat-tooltip { opacity: 1; }
-
-.stat-tooltip-title {
-  font-weight: 500;
-  color: var(--green);
-  font-size: 11px;
-  margin-bottom: 4px;
-  font-family: 'DM Mono', monospace;
   letter-spacing: 0.04em;
-}
-
-.stat-click-hint {
-  font-size: 10px;
-  color: var(--ink3);
-  margin-top: 5px;
-  font-family: 'DM Mono', monospace;
-}
-
-/* ── DETAIL PAGES ── */
-.detail-page {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: var(--bg);
-  z-index: 200;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.detail-page.open { display: flex; }
-
-.detail-page-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 0 28px;
-  height: 56px;
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-  background: var(--bg2);
-}
-
-.detail-page-back {
-  background: none;
-  border: 1px solid var(--border2);
-  border-radius: 6px;
-  color: var(--ink2);
-  font-size: 13px;
-  padding: 5px 12px;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  transition: all 0.15s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.detail-page-back:hover { color: var(--ink); border-color: var(--green); }
-
-.detail-page-title {
-  font-family: 'Instrument Serif', serif;
-  font-size: 20px;
-  color: var(--ink);
-}
-
-.detail-page-count {
-  font-size: 11px;
-  font-family: 'DM Mono', monospace;
-  color: var(--ink3);
-  margin-left: auto;
-}
-
-.detail-page-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 32px 28px;
-  max-width: 860px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.detail-page-body::-webkit-scrollbar { width: 3px; }
-.detail-page-body::-webkit-scrollbar-thumb { background: var(--border2); }
-
-.dp-definition {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--green);
-  border-radius: 0 8px 8px 0;
-  padding: 16px 20px;
-  margin-bottom: 32px;
-}
-
-.dp-definition p {
-  font-size: 14px;
-  color: var(--ink2);
-  line-height: 1.7;
-  font-weight: 300;
-}
-
-.dp-definition p + p { margin-top: 8px; }
-
-.dp-section-label {
-  font-size: 9px;
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 0.12em;
-  color: var(--ink3);
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-
-.dp-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 10px;
-  margin-bottom: 32px;
-}
-
-.dp-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px;
-  transition: border-color 0.15s;
-}
-
-.dp-card:hover { border-color: var(--border2); }
-
-.dp-card-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.dp-card-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.dp-card-name {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink);
-  line-height: 1.3;
-}
-
-.dp-card-meta {
-  font-size: 11px;
-  color: var(--ink3);
-  font-family: 'DM Mono', monospace;
-  margin-bottom: 6px;
-}
-
-.dp-card-desc {
-  font-size: 12px;
-  color: var(--ink2);
-  line-height: 1.5;
-  font-weight: 300;
-}
-
-.dp-edge-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.dp-edge-item:last-child { border-bottom: none; }
-
-.dp-edge-type {
-  font-size: 10px;
-  font-family: 'DM Mono', monospace;
-  padding: 3px 8px;
-  border-radius: 4px;
   white-space: nowrap;
   flex-shrink: 0;
   margin-top: 2px;
-}
-
-.dp-edge-orgs {
-  font-size: 13px;
-  color: var(--ink);
-  line-height: 1.4;
-}
-
-.dp-edge-note {
-  font-size: 11px;
-  color: var(--ink3);
-  margin-top: 3px;
-  line-height: 1.4;
-}
-
-.dp-gap-item {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 18px;
-  margin-bottom: 12px;
-}
-
-.dp-gap-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.dp-gap-priority {
-  font-size: 10px;
-  font-family: 'DM Mono', monospace;
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-weight: 500;
-}
-
-.priority-high { background: rgba(226,75,74,0.15); color: #E24B4A; }
-.priority-medium { background: rgba(232,200,74,0.15); color: #E8C84A; }
-
-.dp-gap-title {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ink);
-}
-
-.dp-gap-category {
-  font-size: 11px;
-  color: var(--ink3);
-  font-family: 'DM Mono', monospace;
-  margin-bottom: 10px;
-}
-
-.dp-gap-desc {
-  font-size: 13px;
-  color: var(--ink2);
-  line-height: 1.6;
-  margin-bottom: 12px;
-  font-weight: 300;
-}
-
-.dp-gap-fixes {
-  border-top: 1px solid var(--border);
-  padding-top: 10px;
-}
-
-.dp-gap-fixes-label {
-  font-size: 9px;
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 0.1em;
-  color: var(--green);
+  border: 1px solid currentColor;
   text-transform: uppercase;
-  margin-bottom: 8px;
 }
 
-.dp-fix-item {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 6px;
-  font-size: 12px;
-  color: var(--ink2);
-  line-height: 1.5;
-}
+.conn-name { font-size: 12px; color: var(--ink); line-height: 1.4; }
 
-.dp-fix-bullet {
-  color: var(--green);
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-@media (max-width: 640px) {
-  .detail-page-body { padding: 20px 16px; }
-  .detail-page-header { padding: 0 16px; }
-  .dp-grid { grid-template-columns: 1fr; }
-}
+/* ── SIDEBAR TOGGLE ── */
 .sidebar-toggle {
-  display: flex;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 30;
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
   width: 36px;
   height: 36px;
-  border-radius: 8px;
   border: 1px solid var(--border2);
-  background: var(--bg2);
-  color: var(--ink2);
+  background: var(--paper);
+  color: var(--ink);
   font-size: 16px;
   cursor: pointer;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s;
 }
 
-.sidebar-toggle:hover { border-color: var(--green); color: var(--green); }
-.sidebar-toggle.active { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+.sidebar-toggle.active { background: var(--ink); color: var(--paper); }
 
-/* Mobile sidebar overlay */
 .sidebar-overlay {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(26,24,20,0.5);
   z-index: 25;
 }
 
 .sidebar-overlay.open { display: block; }
 
-@media (max-width: 640px) {
-  .header-meta { display: none; }
-  .header-stats { gap: 12px; }
-
-  .sidebar {
-    position: fixed;
-    top: 52px;
-    left: 0;
-    bottom: 0;
-    width: 280px;
-    z-index: 26;
-  }
-
-  .admin-toggle { right: 10px; top: 10px; }
-  .admin-btn { font-size: 10px; padding: 4px 8px; }
-  .canvas-hint { display: none; }
-}
-
-/* ── CANVAS AREA ── */
+/* ── CANVAS ── */
 .canvas-wrap {
   flex: 1;
   position: relative;
   overflow: hidden;
+  background: var(--paper);
+}
+
+/* Subtle dot-grid background — like graph paper */
+.canvas-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(26,24,20,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
 }
 
 canvas {
   display: block;
   width: 100%;
   height: 100%;
+  position: relative;
+  z-index: 1;
 }
 
-/* CANVAS CONTROLS */
 .canvas-controls {
   position: absolute;
-  bottom: 16px;
-  right: 16px;
+  bottom: 20px;
+  right: 20px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
+  z-index: 10;
 }
 
 .ctrl-btn {
   width: 32px; height: 32px;
-  border-radius: 6px;
   border: 1px solid var(--border2);
-  background: var(--bg2);
-  color: var(--ink2);
+  background: var(--paper);
+  color: var(--ink3);
   font-size: 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.15s;
+  font-family: 'DM Mono', monospace;
 }
 
-.ctrl-btn:hover { background: var(--bg3); color: var(--ink); border-color: var(--green); }
+.ctrl-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
 .canvas-hint {
   position: absolute;
-  bottom: 16px;
-  left: 16px;
-  font-size: 10px;
+  bottom: 20px;
+  left: 20px;
+  font-size: 9px;
   font-family: 'DM Mono', monospace;
-  color: var(--ink3);
-  letter-spacing: 0.05em;
+  color: var(--ink4);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   pointer-events: none;
+  z-index: 10;
 }
 
-/* ADMIN TOGGLE */
+/* ── ADMIN ── */
 .admin-toggle {
   position: absolute;
-  top: 10px;
-  right: 56px;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
 }
 
 .admin-btn {
-  font-size: 11px;
+  font-size: 9px;
   font-family: 'DM Mono', monospace;
   padding: 5px 12px;
-  border-radius: 5px;
   border: 1px solid var(--border2);
-  background: transparent;
+  background: var(--paper);
   color: var(--ink3);
   cursor: pointer;
   transition: all 0.15s;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.admin-btn:hover { border-color: var(--orange); color: var(--orange); }
-.admin-btn.active { border-color: var(--orange); color: var(--orange); background: rgba(232,131,74,0.08); }
+.admin-btn:hover { border-color: var(--red); color: var(--red); }
+.admin-btn.active { border-color: var(--red); color: var(--paper); background: var(--red); }
 
-/* ── ADMIN PANEL ── */
 .admin-panel {
   position: absolute;
   top: 0; right: 0; bottom: 0;
-  width: 320px;
-  background: var(--bg2);
-  border-left: 1px solid var(--border);
+  width: 300px;
+  background: var(--paper2);
+  border-left: 3px solid var(--ink);
   z-index: 20;
   transform: translateX(100%);
   transition: transform 0.25s ease;
@@ -754,7 +509,7 @@ canvas {
 .admin-panel.open { transform: translateX(0); }
 
 .admin-header {
-  padding: 16px;
+  padding: 16px 18px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -763,10 +518,10 @@ canvas {
 }
 
 .admin-title {
-  font-size: 12px;
   font-family: 'DM Mono', monospace;
-  color: var(--orange);
-  letter-spacing: 0.06em;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--red);
   text-transform: uppercase;
 }
 
@@ -776,48 +531,40 @@ canvas {
   color: var(--ink3);
   font-size: 18px;
   cursor: pointer;
-  line-height: 1;
-  padding: 2px;
+  font-family: 'DM Mono', monospace;
 }
 
 .admin-close:hover { color: var(--ink); }
 
-.admin-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-}
-
+.admin-body { flex: 1; overflow-y: auto; padding: 16px 18px; }
 .admin-body::-webkit-scrollbar { width: 3px; }
 .admin-body::-webkit-scrollbar-thumb { background: var(--border2); }
 
-.admin-tabs {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 16px;
-}
+.admin-tabs { display: flex; gap: 0; margin-bottom: 16px; border: 1px solid var(--border2); }
 
 .admin-tab {
   flex: 1;
-  padding: 6px;
-  font-size: 11px;
+  padding: 7px;
+  font-size: 9px;
   font-family: 'DM Mono', monospace;
-  border: 1px solid var(--border2);
+  border: none;
+  border-right: 1px solid var(--border2);
   background: transparent;
   color: var(--ink3);
   cursor: pointer;
-  border-radius: 5px;
   transition: all 0.15s;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.admin-tab.active { border-color: var(--orange); color: var(--orange); background: rgba(232,131,74,0.08); }
+.admin-tab:last-child { border-right: none; }
+.admin-tab.active { background: var(--ink); color: var(--paper); }
 
 .form-group { margin-bottom: 12px; }
 
 .form-label {
   display: block;
-  font-size: 9px;
+  font-size: 8px;
   font-family: 'DM Mono', monospace;
   letter-spacing: 0.1em;
   color: var(--ink3);
@@ -829,55 +576,42 @@ canvas {
   width: 100%;
   padding: 8px 10px;
   border: 1px solid var(--border2);
-  border-radius: 6px;
-  background: var(--bg3);
+  background: var(--paper);
   color: var(--ink);
   font-family: 'DM Sans', sans-serif;
   font-size: 12px;
   outline: none;
   transition: border-color 0.15s;
+  border-radius: 0;
 }
 
-.form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color: var(--orange);
-}
-
-.form-select option { background: var(--bg3); }
-
-.form-textarea {
-  resize: vertical;
-  min-height: 64px;
-  line-height: 1.5;
-}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--ink); }
+.form-textarea { resize: vertical; min-height: 64px; line-height: 1.5; }
 
 .submit-btn {
   width: 100%;
   padding: 9px;
-  background: var(--orange);
-  color: var(--bg);
+  background: var(--ink);
+  color: var(--paper);
   border: none;
-  border-radius: 6px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
   margin-top: 4px;
   transition: opacity 0.15s;
 }
 
-.submit-btn:hover { opacity: 0.85; }
+.submit-btn:hover { opacity: 0.8; }
 
 .success-msg {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--green);
   font-family: 'DM Mono', monospace;
   margin-top: 8px;
   display: none;
-  letter-spacing: 0.03em;
-}
-
-.org-list {
-  margin-top: 4px;
+  letter-spacing: 0.06em;
 }
 
 .org-list-item {
@@ -890,108 +624,393 @@ canvas {
 }
 
 .org-list-name { color: var(--ink); }
-.org-list-type { font-size: 10px; color: var(--ink3); font-family: 'DM Mono', monospace; }
+.org-list-type { font-size: 9px; color: var(--ink3); font-family: 'DM Mono', monospace; letter-spacing: 0.04em; }
+
+/* ── DETAIL PAGES ── */
+.detail-page {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--paper);
+  z-index: 300;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.detail-page.open { display: flex; }
+
+.detail-page-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 32px;
+  height: 56px;
+  border-bottom: 3px solid var(--ink);
+  flex-shrink: 0;
+  background: var(--paper);
+}
+
+.detail-page-back {
+  background: none;
+  border: 1px solid var(--border2);
+  color: var(--ink2);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.detail-page-back:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.detail-page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.detail-page-count {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  color: var(--ink3);
+  margin-left: auto;
+  letter-spacing: 0.06em;
+}
+
+.detail-page-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px 32px;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.detail-page-body::-webkit-scrollbar { width: 3px; }
+.detail-page-body::-webkit-scrollbar-thumb { background: var(--border2); }
+
+/* Definition block */
+.dp-definition {
+  border-top: 3px solid var(--ink);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 0;
+  margin-bottom: 36px;
+}
+
+.dp-definition p {
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+.dp-definition p + p { margin-top: 10px; }
+
+.dp-section-label {
+  font-size: 8px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.14em;
+  color: var(--ink4);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dp-section-label::before {
+  content: '';
+  display: block;
+  width: 16px;
+  height: 1px;
+  background: var(--red);
+}
+
+.dp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 36px;
+}
+
+.dp-card {
+  background: var(--paper);
+  padding: 18px;
+  transition: background 0.15s;
+}
+
+.dp-card:hover { background: var(--paper2); }
+
+.dp-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.dp-card-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+.dp-card-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.dp-card-meta {
+  font-size: 9px;
+  color: var(--ink3);
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}
+
+.dp-card-desc { font-size: 12px; color: var(--ink2); line-height: 1.5; font-weight: 300; }
+
+.dp-edge-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.dp-edge-item:last-child { border-bottom: none; }
+
+.dp-edge-type {
+  font-size: 8px;
+  font-family: 'DM Mono', monospace;
+  padding: 3px 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 3px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+}
+
+.dp-edge-orgs { font-size: 14px; color: var(--ink); line-height: 1.4; font-weight: 400; }
+.dp-edge-note { font-size: 11px; color: var(--ink3); margin-top: 4px; line-height: 1.4; font-style: italic; }
+
+.dp-gap-item {
+  border: 1px solid var(--border);
+  padding: 22px;
+  margin-bottom: 12px;
+  background: var(--paper);
+}
+
+.dp-gap-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.dp-gap-priority {
+  font-size: 8px;
+  font-family: 'DM Mono', monospace;
+  padding: 3px 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+}
+
+.priority-high { color: #C0392B; }
+.priority-medium { color: #8A6A1A; }
+
+.dp-gap-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.dp-gap-category {
+  font-size: 9px;
+  color: var(--ink3);
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 12px;
+  letter-spacing: 0.06em;
+}
+
+.dp-gap-desc { font-size: 13px; color: var(--ink2); line-height: 1.7; margin-bottom: 14px; font-weight: 300; }
+
+.dp-gap-fixes { border-top: 1px solid var(--border); padding-top: 12px; }
+
+.dp-gap-fixes-label {
+  font-size: 8px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.12em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.dp-fix-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 7px;
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.6;
+}
+
+.dp-fix-bullet { color: var(--red); flex-shrink: 0; font-family: 'DM Mono', monospace; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    transform: translateX(-100%);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-toggle { display: flex; }
+  .masthead-title { font-size: 22px; }
+  .canvas-hint { display: none; }
+  .detail-page-body { padding: 24px 20px; }
+  .detail-page-header { padding: 0 20px; }
+}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <div class="logo-dot"></div>
-    The Invisible Hand
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-top">
+    <div class="masthead-dateline">Athens, Georgia · Civic Network</div>
+    <div class="masthead-stats">
+      <div class="mstat" onclick="openDetailPage('nodes')">
+        <div class="mstat-n" id="nodeCount">15</div>
+        <div class="mstat-l">nodes</div>
+        <div class="mstat-tooltip">
+          <div class="mstat-tooltip-title">Nodes</div>
+          Each dot, or node is one organization whether it be a nonprofit, mutual aid group, faith community, collective, or resource provider doing community work in Athens.
+          <div class="mstat-hint">click to see all →</div>
+        </div>
+      </div>
+      <div class="mstat" onclick="openDetailPage('edges')">
+        <div class="mstat-n" id="edgeCount">17</div>
+        <div class="mstat-l">edges</div>
+        <div class="mstat-tooltip">
+          <div class="mstat-tooltip-title">Edges</div>
+          Each line is a documented relationship through referrals, partnerships, resource flows, shared populations.
+          <div class="mstat-hint">click to see all →</div>
+        </div>
+      </div>
+      <div class="mstat" onclick="openDetailPage('gaps')">
+        <div class="mstat-n">5</div>
+        <div class="mstat-l">gaps</div>
+        <div class="mstat-tooltip">
+          <div class="mstat-tooltip-title">Gaps</div>
+          Known gaps are services nobody offers, areas with no coverage, connections that should exist but don't yet.
+          <div class="mstat-hint">click to see all →</div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="header-stats">
-    <div class="stat" onclick="openDetailPage('nodes')" title="">
-      <div class="stat-n" id="nodeCount">15</div>
-      <div class="stat-l">nodes</div>
-      <div class="stat-tooltip">
-        <div class="stat-tooltip-title">Nodes</div>
-        Each dot on the graph is a node — one organization, collective, or resource provider in the Athens community ecosystem.
-        <div class="stat-click-hint">click to see all →</div>
-      </div>
+  <div class="masthead-title-row">
+    <div class="masthead-title">
+      The <em>Invisible</em> Hand of Athens
     </div>
-    <div class="stat" onclick="openDetailPage('edges')" title="">
-      <div class="stat-n" id="edgeCount">17</div>
-      <div class="stat-l">edges</div>
-      <div class="stat-tooltip">
-        <div class="stat-tooltip-title">Edges</div>
-        Each line between nodes is an edge — a documented relationship between two organizations. Referrals, partnerships, resource flows, and more.
-        <div class="stat-click-hint">click to see all →</div>
-      </div>
-    </div>
-    <div class="stat" onclick="openDetailPage('gaps')" title="">
-      <div class="stat-n">5</div>
-      <div class="stat-l">gaps</div>
-      <div class="stat-tooltip">
-        <div class="stat-tooltip-title">Gaps</div>
-        Known holes in the network — services that don't exist, areas with no coverage, or connections that should exist but don't yet.
-        <div class="stat-click-hint">click to see all →</div>
-      </div>
-    </div>
+    <div class="masthead-sub">Community care · Outside the market</div>
   </div>
-  <div class="header-meta">Athens, GA · v0.1</div>
-</header>
+</div>
 
-<div class="main">
-  <div class="sidebar">
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span class="marquee-item">Mutual Aid <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Community Care <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Athens, Georgia <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Voluntary Federation <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Who Refers to Whom <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Where Resources Flow <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Where the Gaps Are <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Mutual Aid <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Community Care <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Athens, Georgia <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Voluntary Federation <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Who Refers to Whom <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Where Resources Flow <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Where the Gaps Are <span class="marquee-sep">✦</span></span>
+  </div>
+</div>
+
+<!-- APP BODY -->
+<div class="app-body">
+
+  <!-- SIDEBAR TOGGLE (mobile) -->
+  <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+
     <div class="sidebar-section">
       <div class="sidebar-label">Filter by type</div>
       <div class="filter-group">
         <button class="filter-btn active" data-filter="all">All</button>
         <button class="filter-btn" data-filter="Nonprofit (501c3)">
-          <span class="type-dot" style="background:#4ABA7A"></span>Nonprofit
+          <span class="type-dot" style="background:var(--c-nonprofit)"></span>Nonprofit
         </button>
         <button class="filter-btn" data-filter="Faith org">
-          <span class="type-dot" style="background:#E8834A"></span>Faith
+          <span class="type-dot" style="background:var(--c-faith)"></span>Faith
         </button>
         <button class="filter-btn" data-filter="Mutual aid">
-          <span class="type-dot" style="background:#9B82E8"></span>Mutual aid
+          <span class="type-dot" style="background:var(--c-mutual)"></span>Mutual aid
         </button>
         <button class="filter-btn" data-filter="Collective">
-          <span class="type-dot" style="background:#5B9FE8"></span>Collective
+          <span class="type-dot" style="background:var(--c-collective)"></span>Collective
         </button>
         <button class="filter-btn" data-filter="Resource provider">
-          <span class="type-dot" style="background:#E8C84A"></span>Resource provider
+          <span class="type-dot" style="background:var(--c-resource)"></span>Resource
         </button>
       </div>
     </div>
 
     <div class="sidebar-section">
       <div class="sidebar-label">Edge types</div>
-      <div class="legend-item"><div class="legend-edge" style="background:#5B9FE8"></div>Referral</div>
-      <div class="legend-item"><div class="legend-edge" style="background:#4ABA7A"></div>Partnership</div>
-      <div class="legend-item"><div class="legend-edge" style="background:#E8834A"></div>Resource flow</div>
-      <div class="legend-item"><div class="legend-edge" style="background:#9B82E8"></div>Shared population</div>
-      <div class="legend-item"><div class="legend-edge" style="background:#A09C94"></div>Overlap</div>
-      <div class="legend-item"><div class="legend-edge" style="background:#E8C84A"></div>Donates to</div>
+      <div class="legend-item"><div class="legend-edge" style="background:var(--e-referral)"></div>Referral</div>
+      <div class="legend-item"><div class="legend-edge" style="background:var(--e-partnership)"></div>Partnership</div>
+      <div class="legend-item"><div class="legend-edge" style="background:var(--e-resource)"></div>Resource flow</div>
+      <div class="legend-item"><div class="legend-edge" style="background:var(--e-shared)"></div>Shared population</div>
+      <div class="legend-item"><div class="legend-edge" style="background:var(--e-overlap)"></div>Overlap</div>
+      <div class="legend-item"><div class="legend-edge" style="background:var(--e-donates)"></div>Donates to</div>
     </div>
 
     <div class="sidebar-section">
       <div class="sidebar-label">Node types</div>
-      <div class="legend-item"><div class="legend-node" style="background:#4ABA7A"></div>Nonprofit (501c3)</div>
-      <div class="legend-item"><div class="legend-node" style="background:#E8834A"></div>Faith org</div>
-      <div class="legend-item"><div class="legend-node" style="background:#9B82E8"></div>Mutual aid</div>
-      <div class="legend-item"><div class="legend-node" style="background:#5B9FE8"></div>Collective</div>
-      <div class="legend-item"><div class="legend-node" style="background:#E8C84A"></div>Resource provider</div>
+      <div class="legend-item"><div class="legend-node" style="background:var(--c-nonprofit)"></div>Nonprofit (501c3)</div>
+      <div class="legend-item"><div class="legend-node" style="background:var(--c-faith)"></div>Faith org</div>
+      <div class="legend-item"><div class="legend-node" style="background:var(--c-mutual)"></div>Mutual aid</div>
+      <div class="legend-item"><div class="legend-node" style="background:var(--c-collective)"></div>Collective</div>
+      <div class="legend-item"><div class="legend-node" style="background:var(--c-resource)"></div>Resource provider</div>
     </div>
 
     <div class="detail-panel" id="detailPanel">
       <div class="sidebar-label">Selected org</div>
       <p class="detail-empty">Click any node to see details and connections.</p>
     </div>
+
   </div>
 
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <!-- CANVAS -->
   <div class="canvas-wrap">
-    <button class="sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">☰</button>
     <canvas id="graph"></canvas>
 
-    <div class="canvas-hint">drag to pan · scroll to zoom · click node to inspect</div>
+    <div class="canvas-hint">drag · scroll to zoom · click to inspect</div>
 
     <div class="canvas-controls">
-      <button class="ctrl-btn" id="zoomIn" title="Zoom in">+</button>
-      <button class="ctrl-btn" id="zoomOut" title="Zoom out">−</button>
-      <button class="ctrl-btn" id="resetView" title="Reset view">⊙</button>
+      <button class="ctrl-btn" id="zoomIn">+</button>
+      <button class="ctrl-btn" id="zoomOut">−</button>
+      <button class="ctrl-btn" id="resetView">⊙</button>
     </div>
 
     <div class="admin-toggle">
@@ -1000,17 +1019,16 @@ canvas {
 
     <div class="admin-panel" id="adminPanel">
       <div class="admin-header">
-        <span class="admin-title">Admin — add data</span>
+        <span class="admin-title">Add data</span>
         <button class="admin-close" id="adminClose">×</button>
       </div>
       <div class="admin-body">
         <div class="admin-tabs">
           <button class="admin-tab active" id="tabOrg" onclick="switchTab('org')">Add org</button>
-          <button class="admin-tab" id="tabConn" onclick="switchTab('conn')">Add connection</button>
-          <button class="admin-tab" id="tabList" onclick="switchTab('list')">View all</button>
+          <button class="admin-tab" id="tabConn" onclick="switchTab('conn')">Add edge</button>
+          <button class="admin-tab" id="tabList" onclick="switchTab('list')">All orgs</button>
         </div>
 
-        <!-- ADD ORG FORM -->
         <div id="formOrg">
           <div class="form-group">
             <label class="form-label">Organization name *</label>
@@ -1055,7 +1073,6 @@ canvas {
           <div class="success-msg" id="orgSuccess">✓ Node added to graph</div>
         </div>
 
-        <!-- ADD CONNECTION FORM -->
         <div id="formConn" style="display:none">
           <div class="form-group">
             <label class="form-label">Org A *</label>
@@ -1089,12 +1106,11 @@ canvas {
             <textarea class="form-textarea" id="connNotes" placeholder="How do you know about this connection?"></textarea>
           </div>
           <button class="submit-btn" onclick="addConn()">Add connection</button>
-          <div class="success-msg" id="connSuccess">✓ Edge added to graph</div>
+          <div class="success-msg" id="connSuccess">✓ Edge added</div>
         </div>
 
-        <!-- ORG LIST -->
         <div id="formList" style="display:none">
-          <div class="org-list" id="orgListItems"></div>
+          <div id="orgListItems"></div>
         </div>
       </div>
     </div>
@@ -1110,9 +1126,8 @@ canvas {
   </div>
   <div class="detail-page-body">
     <div class="dp-definition">
-      <p>A <strong style="color:var(--green)">node</strong> is any organization, collective, mutual aid group, faith community, or resource provider doing some form of community work in Athens, GA.</p>
-      <p>No 501c3 required. Registered nonprofits and informal groups with no legal status are considered here. What matters is showing up consistently and being accountable in some form to the community they serve.</p>
-      <p>Node size reflects connection count. More edges means a bigger node.</p>
+      <p>A <strong>node</strong> is any organization, collective, mutual aid group, faith community, or resource provider doing community work in Athens, GA. No 501c3 required, but those that are, are still recorded. Community legitimacy is the bar for inclusion.</p>
+      <p>Node size reflects connection count i.e. the more edges means a bigger node. A large isolated node is worth noting</p>
     </div>
     <div class="dp-section-label">All nodes in the graph</div>
     <div class="dp-grid" id="nodes-list"></div>
@@ -1128,40 +1143,40 @@ canvas {
   </div>
   <div class="detail-page-body">
     <div class="dp-definition">
-      <p>An <strong style="color:var(--green)">edge</strong> is a documented relationship between two organizations. Without edges this project would just be a list. Edges are what make it a network.</p>
-      <p>Six types: <strong style="color:#5B9FE8">Referral</strong> — one org sends people to another. <strong style="color:#4ABA7A">Partnership</strong> — active collaboration on something. <strong style="color:#E8834A">Resource flow</strong> — material resources move between orgs. <strong style="color:#9B82E8">Shared population</strong> — both serve the same people. <strong style="color:#A09C94">Overlap</strong> — similar work in the same area. <strong style="color:#E8C84A">Donates to</strong> — a business or provider donates food or resources.</p>
-      <p>Missing edges matter as much as existing ones. A gap between two nodes that should be connected is useful information.</p>
+      <p>An <strong>edge</strong> is a documented relationship between organizations. Edges are what make it a network — and missing edges are as important as existing ones.</p>
+      <p>Six types: <strong>Referral</strong> — one org sends people to another. <strong>Partnership</strong> — active collaboration. <strong>Resource flow</strong> — material resources move between orgs. <strong>Shared population</strong> — both serve the same people. <strong>Overlap</strong> — similar work in the same area. <strong>Donates to</strong> — a business or provider donates food or resources.</p>
     </div>
     <div class="dp-section-label">All edges in the graph</div>
     <div id="edges-list"></div>
   </div>
 </div>
-  
+
 <!-- GAPS PAGE -->
 <div class="detail-page" id="page-gaps">
   <div class="detail-page-header">
     <button class="detail-page-back" onclick="closeDetailPage()">← Back to map</button>
     <span class="detail-page-title">Gaps</span>
-    <span class="detail-page-count">5 identified</span>
+    <span class="detail-page-count">Identified gaps</span>
   </div>
-<div class="dp-definition">
-  <p>A <strong style="color:var(--green)">gaps</strong> are things that are missing. Such as a service nobody offers, a neighborhood nobody reaches, an org doing real work that the rest of the network has never heard of, a referral path that should exist but doesn't.</p>
-  <p>Network analysis finds gaps three ways. First, nodes with very few edges signal isolation. Second, geographic clustering reveals areas with no coverage. Third, comparing what people need against what orgs offer shows service gaps. The gaps listed here came from all three.</p>
-  <p>Mapping a gap is step one. The next step is in the "ways to address" section of each one below.</p>
-</div>
+  <div class="detail-page-body">
+    <div class="dp-definition">
+      <p><strong>Gaps</strong> are things that are missing. Gaps can be, but not limited to, service nobody offers, an area nobody reaches, an org doing work that the network has no record of yet, a referral path that should exist but doesn't yet.</p>
+      <p>Network analysis finds gaps in three ways: nodes with very few edges signal isolation; geographic clustering reveals areas with no coverage; comparing what people need against what orgs offer shows service gaps.</p>
+    </div>
     <div class="dp-section-label">Known gaps</div>
     <div id="gaps-list"></div>
   </div>
 </div>
 
 <script>
+// ── DATA ──────────────────────────────────────────────────────
 const GAPS = [
   {
     title: "East side food access",
     category: "Food · Geographic gap",
     priority: "High",
-    desc: "Food distribution in Athens clusters around downtown and UGA. Nothing east of downtown has been mapped yet. That is a geographic hole.",
-    fixes: [
+    desc: "Food distribution in Athens clusters around downtown and UGA. Nothing east of downtown has been mapped yet.",
+    Potential fixes: [
       "Ask Bigger Vision and Campus Kitchen: who serves the east side?",
       "Search Facebook community groups for east Athens mutual aid activity",
       "Check Food Bank of NE Georgia mobile pantry routes for east side coverage",
@@ -1172,8 +1187,8 @@ const GAPS = [
     title: "Clothing access",
     category: "Clothing · Service gap",
     priority: "Medium",
-    desc: "No free clothing exchange or clothing collective is mapped for Athens. Bigger Vision may have clothing resources but that has not been confirmed. Peer to peer clothing access is not visible anywhere in the network.",
-    fixes: [
+    desc: "No free clothing exchange or clothing collective is mapped for Athens. Bigger Vision may have clothing resources but are currently not accepting anymore donations. Peer to peer clothing access is not visible anywhere in the network.",
+    Potential fixes: [
       "Search Facebook Buy Nothing groups and community swap groups in Athens",
       "Ask orgs: where do people go for clothing?",
       "Check if any faith communities run clothing closets",
@@ -1185,8 +1200,8 @@ const GAPS = [
     category: "Mutual aid · Invisible network",
     priority: "High",
     desc: "Mutual aid networks operating through word of mouth and group chats almost certainly exist in Athens. They have no websites, no directory listings, and no edges in this graph. They are also the most important to find.",
-    fixes: [
-      "Ask every org: who is doing important work nobody knows about?",
+    Potential fixes: [
+      "Ask every org: who is doing work the network hasn't identified?",
       "Search Instagram and Facebook for Athens mutual aid hashtags",
       "Talk to people who use services, they often know informal networks that orgs do not",
       "Show up to community events and ask around",
@@ -1196,11 +1211,11 @@ const GAPS = [
     title: "Grocery store donation gaps",
     category: "Food · Resource flow gap",
     priority: "High",
-    desc: "Paris Baguette and Trader Joe's donate to Campus Kitchen. Kroger, Whole Foods, and most local grocers have no documented donation relationship in the graph. That food is likely going in the trash.",
-    fixes: [
+    desc: "Paris Baguette and Trader Joe's donate to Campus Kitchen. Most local grocers have no documented donation relationship in the graph. That food is likely going in the trash.",
+    Potential fixes: [
       "Ask Campus Kitchen for a full list of current donors and stores they have approached",
       "Flag stores with no donation relationship as outreach targets",
-      "Share the Bill Emerson Good Samaritan Act with store managers, federal law protects food donors from liability",
+      "Share the Bill Emerson Good Samaritan Act with store managers — federal law protects food donors from liability",
       "Connect willing stores directly to Campus Kitchen or Food Bank for pickup",
     ]
   },
@@ -1209,7 +1224,7 @@ const GAPS = [
     category: "Medical / Legal · Service gap",
     priority: "Medium",
     desc: "Free or low cost medical care and legal aid for Athens residents is not mapped. UGA Legal Aid Clinic exists but eligibility and capacity are unconfirmed. Free medical options are unknown.",
-    fixes: [
+    Potential fixes: [
       "Research Athens community health clinics and free clinics",
       "Confirm UGA Legal Aid eligibility, specifically whether they serve undocumented residents",
       "Ask Bigger Vision and Mutual Aid Athens where they refer people for medical and legal needs",
@@ -1217,24 +1232,23 @@ const GAPS = [
     ]
   },
 ];
-</script>
-<script>
+
 const TYPE_COLORS = {
-  "Nonprofit (501c3)":  "#4ABA7A",
-  "Faith org":          "#E8834A",
-  "Mutual aid":         "#9B82E8",
-  "Collective":         "#5B9FE8",
-  "Grassroots / informal": "#E8C84A",
-  "Resource provider":  "#E8C84A",
+  "Nonprofit (501c3)":     "#2D6A4F",
+  "Faith org":             "#8B4513",
+  "Mutual aid":            "#5B4A8A",
+  "Collective":            "#1A5C8A",
+  "Grassroots / informal": "#8A6A1A",
+  "Resource provider":     "#8A6A1A",
 };
 
 const EDGE_COLORS = {
-  "Referral":          "#5B9FE8",
-  "Partnership":       "#4ABA7A",
-  "Resource flow":     "#E8834A",
-  "Shared population": "#9B82E8",
-  "Overlap":           "#6A6760",
-  "Donates to":        "#E8C84A",
+  "Referral":          "#1A5C8A",
+  "Partnership":       "#2D6A4F",
+  "Resource flow":     "#8B4513",
+  "Shared population": "#5B4A8A",
+  "Overlap":           "#7A7568",
+  "Donates to":        "#8A6A1A",
 };
 
 let nodes = [
@@ -1275,18 +1289,14 @@ let edges = [
   { id:"EDG017", source:"ORG013", target:"ORG002", type:"Partnership", notes:"Food Bank and Campus Kitchen both in Athens food recovery ecosystem" },
 ];
 
-// ── GRAPH ENGINE ───────────────────────────────────────────
+// ── GRAPH ENGINE ──────────────────────────────────────────────
 const canvas = document.getElementById('graph');
 const ctx = canvas.getContext('2d');
 
 let W, H, dpr;
 let transform = { x: 0, y: 0, scale: 1 };
-let dragging = false, dragNode = null;
-let panStart = null;
-let wasDragging = false;
-let selectedNode = null;
-let activeFilter = 'all';
-let animFrame = null;
+let dragging = false, dragNode = null, panStart = null, wasDragging = false;
+let selectedNode = null, activeFilter = 'all';
 let nodePositions = {};
 
 function resize() {
@@ -1301,7 +1311,6 @@ function resize() {
   draw();
 }
 
-// Force-directed layout
 function initPositions() {
   const cx = W / 2, cy = H / 2;
   const r = Math.min(W, H) * 0.32;
@@ -1319,22 +1328,16 @@ function initPositions() {
   });
 }
 
-let simRunning = true;
-let simTick = 0;
+let simRunning = true, simTick = 0;
 
 function simulate() {
   if (!simRunning) return;
   simTick++;
   if (simTick > 300) { simRunning = false; return; }
 
-  const k = 0.015;
-  const repulsion = 3200;
-  const damping = 0.88;
-
-  // Reset forces
+  const k = 0.015, repulsion = 3200, damping = 0.88;
   nodes.forEach(n => { n.fx = 0; n.fy = 0; });
 
-  // Repulsion
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
       const a = nodes[i], b = nodes[j];
@@ -1347,7 +1350,6 @@ function simulate() {
     }
   }
 
-  // Attraction (edges)
   edges.forEach(e => {
     const a = nodes.find(n => n.id === e.source);
     const b = nodes.find(n => n.id === e.target);
@@ -1360,20 +1362,17 @@ function simulate() {
     b.fx -= fx; b.fy -= fy;
   });
 
-  // Center gravity
   const cx = W / 2, cy = H / 2;
   nodes.forEach(n => {
     n.fx += (cx - n.x) * 0.003;
     n.fy += (cy - n.y) * 0.003;
   });
 
-  // Apply
   nodes.forEach(n => {
     if (n === dragNode) return;
     n.vx = (n.vx + n.fx) * damping;
     n.vy = (n.vy + n.fy) * damping;
-    n.x += n.vx;
-    n.y += n.vy;
+    n.x += n.vx; n.y += n.vy;
   });
 
   nodes.forEach(n => { nodePositions[n.id] = { x: n.x, y: n.y }; });
@@ -1383,41 +1382,19 @@ function simulate() {
 
 function nodeRadius(n) {
   const degree = edges.filter(e => e.source === n.id || e.target === n.id).length;
-  return Math.max(10, Math.min(22, 10 + degree * 2.2));
+  return Math.max(9, Math.min(20, 9 + degree * 2));
 }
 
 function isVisible(n) {
-  if (activeFilter === 'all') return true;
-  return n.type === activeFilter;
-}
-
-function worldToScreen(x, y) {
-  return {
-    x: x * transform.scale + transform.x,
-    y: y * transform.scale + transform.y,
-  };
+  return activeFilter === 'all' || n.type === activeFilter;
 }
 
 function screenToWorld(x, y) {
-  return {
-    x: (x - transform.x) / transform.scale,
-    y: (y - transform.y) / transform.scale,
-  };
+  return { x: (x - transform.x) / transform.scale, y: (y - transform.y) / transform.scale };
 }
 
 function draw() {
   ctx.clearRect(0, 0, W, H);
-
-  // Background grid (subtle)
-  ctx.save();
-  ctx.strokeStyle = 'rgba(240,237,230,0.03)';
-  ctx.lineWidth = 0.5;
-  const gs = 40 * transform.scale;
-  const ox = transform.x % gs, oy = transform.y % gs;
-  for (let x = ox; x < W; x += gs) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
-  for (let y = oy; y < H; y += gs) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
-  ctx.restore();
-
   ctx.save();
   ctx.translate(transform.x, transform.y);
   ctx.scale(transform.scale, transform.scale);
@@ -1428,32 +1405,24 @@ function draw() {
     const b = nodes.find(n => n.id === e.target);
     if (!a || !b) return;
     const aVis = isVisible(a), bVis = isVisible(b);
-    const color = EDGE_COLORS[e.type] || '#6A6760';
-    const alpha = (aVis && bVis) ? 0.5 : 0.07;
+    const color = EDGE_COLORS[e.type] || '#7A7568';
     const selected = selectedNode && (e.source === selectedNode.id || e.target === selectedNode.id);
+    const alpha = (aVis && bVis) ? (selected ? 0.9 : 0.35) : 0.05;
 
     ctx.beginPath();
     ctx.moveTo(a.x, a.y);
-
-    // Curve slightly
-    const mx = (a.x + b.x) / 2 + (b.y - a.y) * 0.12;
-    const my = (a.y + b.y) / 2 - (b.x - a.x) * 0.12;
+    const mx = (a.x + b.x) / 2 + (b.y - a.y) * 0.1;
+    const my = (a.y + b.y) / 2 - (b.x - a.x) * 0.1;
     ctx.quadraticCurveTo(mx, my, b.x, b.y);
-
-    ctx.strokeStyle = selected
-      ? color
-      : `${color}${Math.round(alpha * 255).toString(16).padStart(2,'0')}`;
-    ctx.lineWidth = selected ? 2 / transform.scale : 1.2 / transform.scale;
+    ctx.strokeStyle = color + Math.round(alpha * 255).toString(16).padStart(2, '0');
+    ctx.lineWidth = selected ? 1.8 / transform.scale : 1 / transform.scale;
     ctx.stroke();
 
-    // Edge label on selected
     if (selected) {
-      const lx = (a.x + b.x) / 2;
-      const ly = (a.y + b.y) / 2 - 10;
-      ctx.font = `${10 / transform.scale}px DM Mono`;
+      ctx.font = `${9 / transform.scale}px DM Mono`;
       ctx.fillStyle = color;
       ctx.textAlign = 'center';
-      ctx.fillText(e.type, lx, ly);
+      ctx.fillText(e.type.toUpperCase(), (a.x + b.x) / 2, (a.y + b.y) / 2 - 8 / transform.scale);
     }
   });
 
@@ -1461,79 +1430,67 @@ function draw() {
   nodes.forEach(n => {
     const r = nodeRadius(n);
     const visible = isVisible(n);
-    const color = TYPE_COLORS[n.type] || '#A09C94';
+    const color = TYPE_COLORS[n.type] || '#7A7568';
     const isSelected = selectedNode && selectedNode.id === n.id;
     const isConnected = selectedNode && edges.some(e =>
       (e.source === selectedNode.id && e.target === n.id) ||
       (e.target === selectedNode.id && e.source === n.id)
     );
 
-    const alpha = !selectedNode ? 1
-      : (isSelected || isConnected) ? 1 : 0.2;
-    const vizAlpha = visible ? alpha : alpha * 0.15;
+    const alpha = !selectedNode ? 1 : (isSelected || isConnected) ? 1 : 0.15;
+    const vizAlpha = visible ? alpha : alpha * 0.1;
 
-    // Glow for selected
+    // Selected ring
     if (isSelected) {
       ctx.beginPath();
-      ctx.arc(n.x, n.y, r + 6, 0, Math.PI * 2);
-      ctx.fillStyle = color + '22';
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, r + 3, 0, Math.PI * 2);
-      ctx.fillStyle = color + '44';
-      ctx.fill();
+      ctx.arc(n.x, n.y, r + 5, 0, Math.PI * 2);
+      ctx.strokeStyle = color + '44';
+      ctx.lineWidth = 3 / transform.scale;
+      ctx.stroke();
     }
 
-    // Node circle
+    // Fill
     ctx.beginPath();
     ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
-    ctx.fillStyle = `${color}${Math.round(vizAlpha * 0.2 * 255).toString(16).padStart(2,'0')}`;
+    ctx.fillStyle = color + Math.round(vizAlpha * 0.15 * 255).toString(16).padStart(2, '0');
     ctx.fill();
-    ctx.strokeStyle = `${color}${Math.round(vizAlpha * 255).toString(16).padStart(2,'0')}`;
-    ctx.lineWidth = isSelected ? 2.5 / transform.scale : 1.5 / transform.scale;
+
+    // Stroke
+    ctx.strokeStyle = color + Math.round(vizAlpha * 255).toString(16).padStart(2, '0');
+    ctx.lineWidth = isSelected ? 2 / transform.scale : 1.2 / transform.scale;
     ctx.stroke();
 
-    // Node label
-    const fontSize = Math.max(9, Math.min(13, 11 / transform.scale));
-    ctx.font = `${isSelected ? 500 : 400} ${fontSize}px DM Sans`;
-    ctx.fillStyle = `rgba(240,237,230,${vizAlpha * (isSelected ? 1 : 0.85)})`;
+    // Label
+    const fontSize = Math.max(8, Math.min(12, 10 / transform.scale));
+    ctx.font = `${isSelected ? '500' : '300'} ${fontSize}px DM Sans`;
+    ctx.fillStyle = `rgba(26,24,20,${vizAlpha * (isSelected ? 1 : 0.8)})`;
     ctx.textAlign = 'center';
 
-    // Wrap long names
     const words = n.name.split(' ');
-    let lines = [];
-    let line = '';
+    let lines = [], line = '';
     words.forEach(w => {
-      if ((line + w).length > 14 && line) {
-        lines.push(line.trim());
-        line = w + ' ';
-      } else {
-        line += w + ' ';
-      }
+      if ((line + w).length > 14 && line) { lines.push(line.trim()); line = w + ' '; }
+      else line += w + ' ';
     });
     if (line.trim()) lines.push(line.trim());
 
     const lineH = fontSize * 1.2;
-    const totalH = lines.length * lineH;
     lines.forEach((ln, i) => {
-      ctx.fillText(ln, n.x, n.y + r + 4 + fontSize + (i * lineH) - totalH / 2);
+      ctx.fillText(ln, n.x, n.y + r + 4 + fontSize + (i * lineH) - (lines.length * lineH) / 2);
     });
   });
 
   ctx.restore();
 }
 
-// ── INTERACTION ────────────────────────────────────────────
+// ── INTERACTION ───────────────────────────────────────────────
 function getNodeAt(sx, sy) {
   const w = screenToWorld(sx, sy);
   let closest = null, closestDist = Infinity;
   nodes.forEach(n => {
-    const r = nodeRadius(n) + 6;
-    const dx = n.x - w.x, dy = n.y - w.y;
-    const dist = Math.sqrt(dx*dx + dy*dy);
-    if (dist < r && dist < closestDist) {
-      closest = n; closestDist = dist;
-    }
+    const r = nodeRadius(n) + 8;
+    const d = Math.sqrt((n.x - w.x) ** 2 + (n.y - w.y) ** 2);
+    if (d < r && d < closestDist) { closest = n; closestDist = d; }
   });
   return closest;
 }
@@ -1541,15 +1498,9 @@ function getNodeAt(sx, sy) {
 canvas.addEventListener('mousedown', e => {
   wasDragging = false;
   const rect = canvas.getBoundingClientRect();
-  const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
-  const hit = getNodeAt(sx, sy);
-  if (hit) {
-    dragNode = hit;
-    dragging = true;
-    selectNode(hit);
-  } else {
-    panStart = { x: e.clientX - transform.x, y: e.clientY - transform.y };
-  }
+  const hit = getNodeAt(e.clientX - rect.left, e.clientY - rect.top);
+  if (hit) { dragNode = hit; dragging = true; selectNode(hit); }
+  else panStart = { x: e.clientX - transform.x, y: e.clientY - transform.y };
 });
 
 canvas.addEventListener('mousemove', e => {
@@ -1559,8 +1510,7 @@ canvas.addEventListener('mousemove', e => {
     wasDragging = true;
     const w = screenToWorld(sx, sy);
     dragNode.x = w.x; dragNode.y = w.y;
-    simRunning = false;
-    draw();
+    simRunning = false; draw();
   } else if (panStart) {
     wasDragging = true;
     transform.x = e.clientX - panStart.x;
@@ -1573,19 +1523,11 @@ canvas.addEventListener('mousemove', e => {
 
 canvas.addEventListener('mouseup', e => {
   const rect = canvas.getBoundingClientRect();
-  const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
   if (!wasDragging) {
-    const hit = getNodeAt(sx, sy);
-    if (!hit) {
-      selectedNode = null;
-      renderDetail(null);
-      draw();
-    }
+    const hit = getNodeAt(e.clientX - rect.left, e.clientY - rect.top);
+    if (!hit) { selectedNode = null; renderDetail(null); draw(); }
   }
-  dragNode = null;
-  dragging = false;
-  panStart = null;
-  wasDragging = false;
+  dragNode = null; dragging = false; panStart = null; wasDragging = false;
 });
 
 canvas.addEventListener('wheel', e => {
@@ -1600,26 +1542,22 @@ canvas.addEventListener('wheel', e => {
   draw();
 }, { passive: false });
 
-// Touch support
 let lastTouch = null;
 canvas.addEventListener('touchstart', e => {
   e.preventDefault();
   const t = e.touches[0];
   const rect = canvas.getBoundingClientRect();
-  const sx = t.clientX - rect.left, sy = t.clientY - rect.top;
-  const hit = getNodeAt(sx, sy);
+  const hit = getNodeAt(t.clientX - rect.left, t.clientY - rect.top);
   if (hit) { dragNode = hit; selectNode(hit); }
   else panStart = { x: t.clientX - transform.x, y: t.clientY - transform.y };
-  lastTouch = { x: t.clientX, y: t.clientY };
 }, { passive: false });
 
 canvas.addEventListener('touchmove', e => {
   e.preventDefault();
   const t = e.touches[0];
   const rect = canvas.getBoundingClientRect();
-  const sx = t.clientX - rect.left, sy = t.clientY - rect.top;
   if (dragNode) {
-    const w = screenToWorld(sx, sy);
+    const w = screenToWorld(t.clientX - rect.left, t.clientY - rect.top);
     dragNode.x = w.x; dragNode.y = w.y;
     simRunning = false; draw();
   } else if (panStart) {
@@ -1631,27 +1569,22 @@ canvas.addEventListener('touchmove', e => {
 
 canvas.addEventListener('touchend', () => { dragNode = null; panStart = null; });
 
-// ── CONTROLS ───────────────────────────────────────────────
+// ── CONTROLS ──────────────────────────────────────────────────
 document.getElementById('zoomIn').onclick = () => {
   transform.scale = Math.min(3, transform.scale * 1.2);
   transform.x = W/2 - (W/2 - transform.x) * 1.2;
   transform.y = H/2 - (H/2 - transform.y) * 1.2;
   draw();
 };
-
 document.getElementById('zoomOut').onclick = () => {
   transform.scale = Math.max(0.3, transform.scale / 1.2);
   transform.x = W/2 - (W/2 - transform.x) / 1.2;
   transform.y = H/2 - (H/2 - transform.y) / 1.2;
   draw();
 };
+document.getElementById('resetView').onclick = () => { transform = { x:0, y:0, scale:1 }; draw(); };
 
-document.getElementById('resetView').onclick = () => {
-  transform = { x: 0, y: 0, scale: 1 };
-  draw();
-};
-
-// ── FILTER ────────────────────────────────────────────────
+// ── FILTER ────────────────────────────────────────────────────
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.onclick = () => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -1661,67 +1594,49 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   };
 });
 
-// ── DETAIL PANEL ──────────────────────────────────────────
+// ── DETAIL PANEL ──────────────────────────────────────────────
 function selectNode(n) {
   selectedNode = n;
   renderDetail(n);
   draw();
-  if (n && window.innerWidth <= 640) openSidebar();
+  if (n && window.innerWidth <= 768) openSidebar();
 }
+
 function renderDetail(n) {
   const panel = document.getElementById('detailPanel');
   if (!n) {
     panel.innerHTML = '<div class="sidebar-label">Selected org</div><p class="detail-empty">Click any node to see details and connections.</p>';
     return;
   }
-
-  const color = TYPE_COLORS[n.type] || '#A09C94';
+  const color = TYPE_COLORS[n.type] || '#7A7568';
   const conns = edges.filter(e => e.source === n.id || e.target === n.id);
-
-  let connHTML = '';
-  conns.forEach(e => {
+  let connHTML = conns.map(e => {
     const otherId = e.source === n.id ? e.target : e.source;
     const other = nodes.find(x => x.id === otherId);
-    if (!other) return;
-    const ec = EDGE_COLORS[e.type] || '#6A6760';
-    connHTML += `
-      <div class="conn-item" onclick="selectNode(nodes.find(x=>x.id==='${otherId}'))">
-        <span class="conn-rel" style="background:${ec}22;color:${ec}">${e.type}</span>
-        <span class="conn-name">${other.name}</span>
-      </div>`;
-  });
+    if (!other) return '';
+    const ec = EDGE_COLORS[e.type] || '#7A7568';
+    return `<div class="conn-item" onclick="selectNode(nodes.find(x=>x.id==='${otherId}'))">
+      <span class="conn-rel" style="color:${ec}">${e.type}</span>
+      <span class="conn-name">${other.name}</span>
+    </div>`;
+  }).join('');
 
   panel.innerHTML = `
     <div class="sidebar-label">Selected org</div>
     <div class="detail-name">${n.name}</div>
-    <div class="detail-type-badge" style="background:${color}22;color:${color}">
-      <span style="width:6px;height:6px;border-radius:50%;background:${color};display:inline-block"></span>
-      ${n.type}
-    </div>
-    <div class="detail-field">
-      <div class="detail-field-label">Formality</div>
-      <div class="detail-field-value">${n.formality}</div>
-    </div>
-    <div class="detail-field">
-      <div class="detail-field-label">Services</div>
-      <div class="detail-field-value">${n.services}</div>
-    </div>
-    <div class="detail-field">
-      <div class="detail-field-label">Area</div>
-      <div class="detail-field-value">${n.area}</div>
-    </div>
-    <div class="detail-field">
-      <div class="detail-field-label">Contact</div>
-      <div class="detail-field-value">${n.contact}</div>
-    </div>
+    <div class="detail-type-badge" style="color:${color}">${n.type}</div>
+    <div class="detail-field"><div class="detail-field-label">Formality</div><div class="detail-field-value">${n.formality}</div></div>
+    <div class="detail-field"><div class="detail-field-label">Services</div><div class="detail-field-value">${n.services}</div></div>
+    <div class="detail-field"><div class="detail-field-label">Area</div><div class="detail-field-value">${n.area}</div></div>
+    <div class="detail-field"><div class="detail-field-label">Contact</div><div class="detail-field-value">${n.contact}</div></div>
     ${n.notes ? `<div class="detail-field"><div class="detail-field-label">Notes</div><div class="detail-field-value">${n.notes}</div></div>` : ''}
     <div class="detail-field">
       <div class="detail-field-label">Connections (${conns.length})</div>
-      <div class="connections-list">${connHTML || '<span style="font-size:11px;color:var(--ink3)">No connections yet</span>'}</div>
+      <div>${connHTML || '<span style="font-size:11px;color:var(--ink4)">No connections yet</span>'}</div>
     </div>`;
 }
 
-// ── ADMIN ─────────────────────────────────────────────────
+// ── ADMIN ─────────────────────────────────────────────────────
 document.getElementById('adminToggle').onclick = () => {
   const panel = document.getElementById('adminPanel');
   const btn = document.getElementById('adminToggle');
@@ -1729,7 +1644,6 @@ document.getElementById('adminToggle').onclick = () => {
   btn.classList.toggle('active', open);
   populateOrgSelects();
 };
-
 document.getElementById('adminClose').onclick = () => {
   document.getElementById('adminPanel').classList.remove('open');
   document.getElementById('adminToggle').classList.remove('active');
@@ -1737,20 +1651,18 @@ document.getElementById('adminClose').onclick = () => {
 
 function switchTab(tab) {
   ['org','conn','list'].forEach(t => {
-    document.getElementById('formOrg'.replace('org', t === 'org' ? 'org' : t === 'conn' ? 'conn' : 'list')).style.display = 'none';
+    document.getElementById('form' + t.charAt(0).toUpperCase() + t.slice(1)).style.display = 'none';
     document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1)).classList.remove('active');
   });
   document.getElementById('form' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.display = 'block';
   document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
-
   if (tab === 'list') renderOrgList();
   if (tab === 'conn') populateOrgSelects();
 }
 
 function populateOrgSelects() {
   ['connOrgA','connOrgB'].forEach(id => {
-    const sel = document.getElementById(id);
-    sel.innerHTML = nodes.map(n => `<option value="${n.id}">${n.name}</option>`).join('');
+    document.getElementById(id).innerHTML = nodes.map(n => `<option value="${n.id}">${n.name}</option>`).join('');
   });
 }
 
@@ -1758,77 +1670,55 @@ function addOrg() {
   const name = document.getElementById('orgName').value.trim();
   if (!name) return;
   const id = 'ORG' + String(nodes.length + 1).padStart(3, '0');
-  const cx = W / 2, cy = H / 2;
-  const newNode = {
-    id,
-    name,
+  nodes.push({
+    id, name,
     type: document.getElementById('orgType').value,
     formality: document.getElementById('orgFormality').value,
     services: document.getElementById('orgServices').value || '—',
     area: document.getElementById('orgArea').value || '—',
     contact: document.getElementById('orgContact').value || '—',
     notes: document.getElementById('orgNotes').value || '',
-    x: cx + (Math.random() - 0.5) * 100,
-    y: cy + (Math.random() - 0.5) * 100,
-    vx: 0, vy: 0,
-  };
-  nodes.push(newNode);
-  document.getElementById('nodeCount').textContent = nodes.length;
-
-  // Clear form
-  ['orgName','orgServices','orgArea','orgContact','orgNotes'].forEach(id => {
-    document.getElementById(id).value = '';
+    x: W/2 + (Math.random()-0.5)*100,
+    y: H/2 + (Math.random()-0.5)*100,
+    vx:0, vy:0,
   });
-
+  document.getElementById('nodeCount').textContent = nodes.length;
+  ['orgName','orgServices','orgArea','orgContact','orgNotes'].forEach(id => document.getElementById(id).value = '');
   const msg = document.getElementById('orgSuccess');
   msg.style.display = 'block';
   setTimeout(() => msg.style.display = 'none', 2500);
-
-  simRunning = true; simTick = 0;
-  simulate();
+  simRunning = true; simTick = 0; simulate();
 }
 
 function addConn() {
   const a = document.getElementById('connOrgA').value;
   const b = document.getElementById('connOrgB').value;
   if (a === b) return;
-  const id = 'EDG' + String(edges.length + 1).padStart(3, '0');
-  edges.push({
-    id,
-    source: a,
-    target: b,
-    type: document.getElementById('connType').value,
-    notes: document.getElementById('connNotes').value || '',
-  });
+  edges.push({ id: 'EDG' + String(edges.length+1).padStart(3,'0'), source:a, target:b, type: document.getElementById('connType').value, notes: document.getElementById('connNotes').value || '' });
   document.getElementById('edgeCount').textContent = edges.length;
   document.getElementById('connNotes').value = '';
-
   const msg = document.getElementById('connSuccess');
   msg.style.display = 'block';
   setTimeout(() => msg.style.display = 'none', 2500);
-
   draw();
 }
 
 function renderOrgList() {
-  const list = document.getElementById('orgListItems');
-  list.innerHTML = nodes.map(n => {
-    const color = TYPE_COLORS[n.type] || '#A09C94';
+  document.getElementById('orgListItems').innerHTML = nodes.map(n => {
+    const color = TYPE_COLORS[n.type] || '#7A7568';
     const degree = edges.filter(e => e.source === n.id || e.target === n.id).length;
-    return `
-      <div class="org-list-item">
-        <div>
-          <div class="org-list-name" style="display:flex;align-items:center;gap:6px">
-            <span style="width:7px;height:7px;border-radius:50%;background:${color};flex-shrink:0"></span>
-            ${n.name}
-          </div>
-          <div class="org-list-type">${n.type} · ${degree} connections</div>
+    return `<div class="org-list-item">
+      <div>
+        <div class="org-list-name" style="display:flex;align-items:center;gap:6px">
+          <span style="width:7px;height:7px;border-radius:50%;background:${color};flex-shrink:0"></span>${n.name}
         </div>
-      </div>`;
+        <div class="org-list-type">${n.type} · ${degree} connections</div>
+      </div>
+    </div>`;
   }).join('');
 }
 
-// ── DETAIL PAGES ──────────────────────────────────────────
+// ── DETAIL PAGES ──────────────────────────────────────────────
 function openDetailPage(type) {
   const page = document.getElementById('page-' + type);
   if (!page) return;
@@ -1843,73 +1733,56 @@ function closeDetailPage() {
 }
 
 function renderNodesPage() {
-  const list = document.getElementById('nodes-list');
   const count = document.getElementById('nodes-page-count');
   count.textContent = nodes.length + ' organizations';
-  list.innerHTML = nodes.map(n => {
-    const color = TYPE_COLORS[n.type] || '#A09C94';
+  document.getElementById('nodes-list').innerHTML = nodes.map(n => {
+    const color = TYPE_COLORS[n.type] || '#7A7568';
     const degree = edges.filter(e => e.source === n.id || e.target === n.id).length;
-    return `
-      <div class="dp-card">
-        <div class="dp-card-header">
-          <div class="dp-card-dot" style="background:${color}"></div>
-          <div class="dp-card-name">${n.name}</div>
-        </div>
-        <div class="dp-card-meta">${n.type} · ${n.formality} · ${degree} connection${degree !== 1 ? 's' : ''}</div>
-        <div class="dp-card-desc">${n.services}</div>
-        ${n.area !== '—' ? `<div class="dp-card-meta" style="margin-top:6px">📍 ${n.area}</div>` : ''}
-      </div>`;
+    return `<div class="dp-card">
+      <div class="dp-card-header"><div class="dp-card-dot" style="background:${color}"></div><div class="dp-card-name">${n.name}</div></div>
+      <div class="dp-card-meta">${n.type} · ${n.formality} · ${degree} connection${degree !== 1 ? 's' : ''}</div>
+      <div class="dp-card-desc">${n.services}</div>
+      ${n.area !== '—' ? `<div class="dp-card-meta" style="margin-top:6px">📍 ${n.area}</div>` : ''}
+    </div>`;
   }).join('');
 }
 
 function renderEdgesPage() {
-  const list = document.getElementById('edges-list');
-  const count = document.getElementById('edges-page-count');
-  count.textContent = edges.length + ' connections';
-  list.innerHTML = edges.map(e => {
+  document.getElementById('edges-page-count').textContent = edges.length + ' connections';
+  document.getElementById('edges-list').innerHTML = edges.map(e => {
     const a = nodes.find(n => n.id === e.source);
     const b = nodes.find(n => n.id === e.target);
     if (!a || !b) return '';
-    const color = EDGE_COLORS[e.type] || '#6A6760';
-    return `
-      <div class="dp-edge-item">
-        <span class="dp-edge-type" style="background:${color}22;color:${color}">${e.type}</span>
-        <div>
-          <div class="dp-edge-orgs">${a.name} ↔ ${b.name}</div>
-          ${e.notes ? `<div class="dp-edge-note">${e.notes}</div>` : ''}
-        </div>
-      </div>`;
+    const color = EDGE_COLORS[e.type] || '#7A7568';
+    return `<div class="dp-edge-item">
+      <span class="dp-edge-type" style="color:${color}">${e.type}</span>
+      <div>
+        <div class="dp-edge-orgs">${a.name} ↔ ${b.name}</div>
+        ${e.notes ? `<div class="dp-edge-note">${e.notes}</div>` : ''}
+      </div>
+    </div>`;
   }).join('');
 }
 
 function renderGapsPage() {
-  const list = document.getElementById('gaps-list');
-  list.innerHTML = GAPS.map(g => {
-    const priorityClass = g.priority === 'High' ? 'priority-high' : 'priority-medium';
-    const fixes = g.fixes.map(f => `
-      <div class="dp-fix-item">
-        <span class="dp-fix-bullet">→</span>
-        <span>${f}</span>
-      </div>`).join('');
-    return `
-      <div class="dp-gap-item">
-        <div class="dp-gap-header">
-          <span class="dp-gap-priority ${priorityClass}">${g.priority}</span>
-          <span class="dp-gap-title">${g.title}</span>
-        </div>
-        <div class="dp-gap-category">${g.category}</div>
-        <div class="dp-gap-desc">${g.desc}</div>
-        <div class="dp-gap-fixes">
-          <div class="dp-gap-fixes-label">Ways to address this gap</div>
-          ${fixes}
-        </div>
-      </div>`;
-  }).join('');
+  document.getElementById('gaps-list').innerHTML = GAPS.map(g => `
+    <div class="dp-gap-item">
+      <div class="dp-gap-header">
+        <span class="dp-gap-priority priority-${g.priority.toLowerCase()}">${g.priority}</span>
+        <span class="dp-gap-title">${g.title}</span>
+      </div>
+      <div class="dp-gap-category">${g.category}</div>
+      <div class="dp-gap-desc">${g.desc}</div>
+      <div class="dp-gap-fixes">
+        <div class="dp-gap-fixes-label">Ways to address this gap</div>
+        ${g.fixes.map(f => `<div class="dp-fix-item"><span class="dp-fix-bullet">→</span><span>${f}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
 }
 
-// ── SIDEBAR ───────────────────────────────────────────────
+// ── SIDEBAR (mobile) ──────────────────────────────────────────
 const sidebarToggle = document.getElementById('sidebarToggle');
-const sidebarEl = document.querySelector('.sidebar');
+const sidebarEl = document.getElementById('sidebar');
 const sidebarOverlay = document.getElementById('sidebarOverlay');
 
 function openSidebar() {
@@ -1926,18 +1799,11 @@ function closeSidebar() {
   sidebarToggle.textContent = '☰';
 }
 
-sidebarToggle.onclick = () => {
-  sidebarEl.classList.contains('open') ? closeSidebar() : openSidebar();
-};
-
+sidebarToggle.onclick = () => sidebarEl.classList.contains('open') ? closeSidebar() : openSidebar();
 sidebarOverlay.onclick = closeSidebar;
 
-// Open sidebar by default on desktop
-if (window.innerWidth > 640) openSidebar();
-
-// ── INIT ──────────────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────────────
 window.addEventListener('resize', () => { resize(); initPositions(); simulate(); });
-
 resize();
 initPositions();
 simulate();
