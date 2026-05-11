@@ -905,7 +905,7 @@ canvas {
         </div>
       </div>
       <div class="mstat" onclick="openDetailPage('gaps')">
-        <div class="mstat-n">5</div>
+        <div class="mstat-n">4</div>
         <div class="mstat-l">gaps</div>
         <div class="mstat-tooltip">
           <div class="mstat-tooltip-title">Gaps</div>
@@ -1158,7 +1158,7 @@ canvas {
   <div class="detail-page-header">
     <button class="detail-page-back" onclick="closeDetailPage()">← Back to map</button>
     <span class="detail-page-title">Gaps</span>
-    <span class="detail-page-count">5 identified</span>
+    <span class="detail-page-count">4 identified</span>
   </div>
   <div class="detail-page-body">
     <div class="dp-definition">
@@ -1173,18 +1173,6 @@ canvas {
 <script>
 // ── DATA ──────────────────────────────────────────────────────
 const GAPS = [
-  {
-    title: "East side food access",
-    category: "Food · Geographic gap",
-    priority: "High",
-    desc: "Food distribution in Athens clusters around downtown and UGA. Nothing east of downtown has been mapped yet. That is a geographic hole.",
-    fixes: [
-      "Ask Bigger Vision and Campus Kitchen: who serves the east side?",
-      "Search Facebook community groups for east Athens mutual aid activity",
-      "Check Food Bank of NE Georgia mobile pantry routes for east side coverage",
-      "Ask Lemonaid Athens if their Sunday routes reach east side neighborhoods",
-    ]
-  },
   {
     title: "Clothing access",
     category: "Clothing · Service gap",
@@ -1256,7 +1244,7 @@ const EDGE_COLORS = {
 let nodes = [
   { id:"ORG001", name:"Bigger Vision", type:"Nonprofit (501c3)", formality:"Fully formal", services:"Shelter, meals, reentry, case management", area:"Downtown", contact:"biggervision.org", notes:"Primary connector in Athens homeless services.", x:0, y:0 },
   { id:"ORG002", name:"Campus Kitchen at UGA", type:"Nonprofit (501c3)", formality:"Fully formal", services:"Food recovery, food distribution", area:"UGA / Citywide", contact:"campuskitchen.uga.edu", notes:"Recovers surplus food from campus dining + local sources.", x:0, y:0 },
-  { id:"ORG003", name:"Covenant Presbyterian", type:"Faith org", formality:"Institutionally structured", services:"Grocery distribution, food pantry", area:"Confirm area", contact:"Confirm contact", notes:"Food pantry in approved church budget. Auto-exempt, no 990 required.", x:0, y:0 },
+  { id:"ORG003", name:"Covenant Presbyterian", type:"Faith org", formality:"Institutionally structured", services:"Grocery distribution, food pantry", area:"East side", contact:"Confirm contact", notes:"Food pantry in approved church budget. Auto-exempt, no 990 required. Serves east side Athens.", x:0, y:0 },
   { id:"ORG004", name:"Lemonaid Athens", type:"Mutual aid", formality:"Organized informal", services:"Sunday meals for unhoused", area:"Citywide", contact:"instagram.com/lemonaid.athens", notes:"Student-led mutual aid. Explicitly frames work as mutual aid not charity. Sunday meals.", x:0, y:0 },
   { id:"ORG005", name:"Not Church Athens", type:"Faith org", formality:"Organized informal", services:"Hot meals (Sunday Supper), supplies for unhoused", area:"Citywide", contact:"notchurchathens.org", notes:"Founded 2019. Crowd-sourced meals ~monthly for ~50 unhoused neighbors. Distributes via Mutual Aid Athens liaison.", x:0, y:0 },
   { id:"ORG006", name:"Athens Free School", type:"Collective", formality:"Organized informal", services:"Free workshops, skill-sharing, Art in the Park", area:"Citywide", contact:"linktr.ee/athensfreeschool", notes:"Founded 2016, revived post-COVID. Non-hierarchical, no credentials required to teach.", x:0, y:0 },
