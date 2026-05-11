@@ -884,14 +884,14 @@ canvas {
 <!-- MASTHEAD -->
 <div class="masthead">
   <div class="masthead-top">
-    <div class="masthead-dateline">Athens, Georgia · Civic Network</div>
+    <div class="masthead-dateline">Athens, Georgia · Civic Network · v0.1</div>
     <div class="masthead-stats">
       <div class="mstat" onclick="openDetailPage('nodes')">
         <div class="mstat-n" id="nodeCount">15</div>
         <div class="mstat-l">nodes</div>
         <div class="mstat-tooltip">
           <div class="mstat-tooltip-title">Nodes</div>
-          Each dot, or node is one organization whether it be a nonprofit, mutual aid group, faith community, collective, or resource provider doing community work in Athens.
+          Each dot is one organization — nonprofit, mutual aid group, faith community, collective, or resource provider doing community work in Athens.
           <div class="mstat-hint">click to see all →</div>
         </div>
       </div>
@@ -900,7 +900,7 @@ canvas {
         <div class="mstat-l">edges</div>
         <div class="mstat-tooltip">
           <div class="mstat-tooltip-title">Edges</div>
-          Each line is a documented relationship through referrals, partnerships, resource flows, shared populations.
+          Each line is a documented relationship — referrals, partnerships, resource flows, shared populations.
           <div class="mstat-hint">click to see all →</div>
         </div>
       </div>
@@ -909,7 +909,7 @@ canvas {
         <div class="mstat-l">gaps</div>
         <div class="mstat-tooltip">
           <div class="mstat-tooltip-title">Gaps</div>
-          Known gaps are services nobody offers, areas with no coverage, connections that should exist but don't yet.
+          Known holes — services nobody offers, areas with no coverage, connections that should exist but don't.
           <div class="mstat-hint">click to see all →</div>
         </div>
       </div>
@@ -933,6 +933,7 @@ canvas {
     <span class="marquee-item">Who Refers to Whom <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Where Resources Flow <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Where the Gaps Are <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Outside Institutional Recognition <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Mutual Aid <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Community Care <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Athens, Georgia <span class="marquee-sep">✦</span></span>
@@ -940,6 +941,7 @@ canvas {
     <span class="marquee-item">Who Refers to Whom <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Where Resources Flow <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Where the Gaps Are <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Outside Institutional Recognition <span class="marquee-sep">✦</span></span>
   </div>
 </div>
 
@@ -1126,8 +1128,8 @@ canvas {
   </div>
   <div class="detail-page-body">
     <div class="dp-definition">
-      <p>A <strong>node</strong> is any organization, collective, mutual aid group, faith community, or resource provider doing community work in Athens, GA. No 501c3 required, but those that are, are still recorded. Community legitimacy is the bar for inclusion.</p>
-      <p>Node size reflects connection count i.e. the more edges means a bigger node. A large isolated node is worth noting</p>
+      <p>A <strong>node</strong> is any organization, collective, mutual aid group, faith community, or resource provider doing community work in Athens, GA. No 501c3 required. Community legitimacy is the bar for inclusion.</p>
+      <p>Node size reflects connection count — more edges means a bigger node. A large isolated node is worth examining.</p>
     </div>
     <div class="dp-section-label">All nodes in the graph</div>
     <div class="dp-grid" id="nodes-list"></div>
@@ -1143,7 +1145,7 @@ canvas {
   </div>
   <div class="detail-page-body">
     <div class="dp-definition">
-      <p>An <strong>edge</strong> is a documented relationship between organizations. Edges are what make it a network — and missing edges are as important as existing ones.</p>
+      <p>An <strong>edge</strong> is a documented relationship between two organizations. Without edges this is just a list. Edges are what make it a network — and missing edges are as important as existing ones.</p>
       <p>Six types: <strong>Referral</strong> — one org sends people to another. <strong>Partnership</strong> — active collaboration. <strong>Resource flow</strong> — material resources move between orgs. <strong>Shared population</strong> — both serve the same people. <strong>Overlap</strong> — similar work in the same area. <strong>Donates to</strong> — a business or provider donates food or resources.</p>
     </div>
     <div class="dp-section-label">All edges in the graph</div>
@@ -1156,12 +1158,12 @@ canvas {
   <div class="detail-page-header">
     <button class="detail-page-back" onclick="closeDetailPage()">← Back to map</button>
     <span class="detail-page-title">Gaps</span>
-    <span class="detail-page-count">Identified gaps</span>
+    <span class="detail-page-count">5 identified</span>
   </div>
   <div class="detail-page-body">
     <div class="dp-definition">
-      <p><strong>Gaps</strong> are things that are missing. Gaps can be, but not limited to, service nobody offers, an area nobody reaches, an org doing work that the network has no record of yet, a referral path that should exist but doesn't yet.</p>
-      <p>Network analysis finds gaps in three ways: nodes with very few edges signal isolation; geographic clustering reveals areas with no coverage; comparing what people need against what orgs offer shows service gaps.</p>
+      <p><strong>Gaps</strong> are things that are missing — a service nobody offers, a neighborhood nobody reaches, an org doing real work the network has never heard of, a referral path that should exist but doesn't.</p>
+      <p>Network analysis finds gaps three ways: nodes with very few edges signal isolation; geographic clustering reveals areas with no coverage; comparing what people need against what orgs offer shows service gaps. The gaps below came from all three.</p>
     </div>
     <div class="dp-section-label">Known gaps</div>
     <div id="gaps-list"></div>
@@ -1175,8 +1177,8 @@ const GAPS = [
     title: "East side food access",
     category: "Food · Geographic gap",
     priority: "High",
-    desc: "Food distribution in Athens clusters around downtown and UGA. Nothing east of downtown has been mapped yet.",
-    Potential fixes: [
+    desc: "Food distribution in Athens clusters around downtown and UGA. Nothing east of downtown has been mapped yet. That is a geographic hole.",
+    fixes: [
       "Ask Bigger Vision and Campus Kitchen: who serves the east side?",
       "Search Facebook community groups for east Athens mutual aid activity",
       "Check Food Bank of NE Georgia mobile pantry routes for east side coverage",
@@ -1187,8 +1189,8 @@ const GAPS = [
     title: "Clothing access",
     category: "Clothing · Service gap",
     priority: "Medium",
-    desc: "No free clothing exchange or clothing collective is mapped for Athens. Bigger Vision may have clothing resources but are currently not accepting anymore donations. Peer to peer clothing access is not visible anywhere in the network.",
-    Potential fixes: [
+    desc: "No free clothing exchange or clothing collective is mapped for Athens. Bigger Vision may have clothing resources but that has not been confirmed. Peer to peer clothing access is not visible anywhere in the network.",
+    fixes: [
       "Search Facebook Buy Nothing groups and community swap groups in Athens",
       "Ask orgs: where do people go for clothing?",
       "Check if any faith communities run clothing closets",
@@ -1200,10 +1202,10 @@ const GAPS = [
     category: "Mutual aid · Invisible network",
     priority: "High",
     desc: "Mutual aid networks operating through word of mouth and group chats almost certainly exist in Athens. They have no websites, no directory listings, and no edges in this graph. They are also the most important to find.",
-    Potential fixes: [
-      "Ask every org: who is doing work the network hasn't identified?",
+    fixes: [
+      "Ask every org: who is doing important work nobody knows about?",
       "Search Instagram and Facebook for Athens mutual aid hashtags",
-      "Talk to people who use services, they often know informal networks that orgs do not",
+      "Talk to people who use services — they often know informal networks that orgs do not",
       "Show up to community events and ask around",
     ]
   },
@@ -1211,8 +1213,8 @@ const GAPS = [
     title: "Grocery store donation gaps",
     category: "Food · Resource flow gap",
     priority: "High",
-    desc: "Paris Baguette and Trader Joe's donate to Campus Kitchen. Most local grocers have no documented donation relationship in the graph. That food is likely going in the trash.",
-    Potential fixes: [
+    desc: "Paris Baguette and Trader Joe's donate to Campus Kitchen. Kroger, Whole Foods, and most local grocers have no documented donation relationship in the graph. That food is likely going in the trash.",
+    fixes: [
       "Ask Campus Kitchen for a full list of current donors and stores they have approached",
       "Flag stores with no donation relationship as outreach targets",
       "Share the Bill Emerson Good Samaritan Act with store managers — federal law protects food donors from liability",
@@ -1224,7 +1226,7 @@ const GAPS = [
     category: "Medical / Legal · Service gap",
     priority: "Medium",
     desc: "Free or low cost medical care and legal aid for Athens residents is not mapped. UGA Legal Aid Clinic exists but eligibility and capacity are unconfirmed. Free medical options are unknown.",
-    Potential fixes: [
+    fixes: [
       "Research Athens community health clinics and free clinics",
       "Confirm UGA Legal Aid eligibility, specifically whether they serve undocumented residents",
       "Ask Bigger Vision and Mutual Aid Athens where they refer people for medical and legal needs",
@@ -1803,10 +1805,16 @@ sidebarToggle.onclick = () => sidebarEl.classList.contains('open') ? closeSideba
 sidebarOverlay.onclick = closeSidebar;
 
 // ── INIT ──────────────────────────────────────────────────────
-window.addEventListener('resize', () => { resize(); initPositions(); simulate(); });
-resize();
-initPositions();
-simulate();
+window.addEventListener('resize', () => { resize(); initPositions(); simRunning = true; simTick = 0; simulate(); });
+
+// Double rAF ensures flex layout has fully painted before we measure canvas
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
+    resize();
+    initPositions();
+    simulate();
+  });
+});
 </script>
 </body>
 </html>
